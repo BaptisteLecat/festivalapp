@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:festivalapp/Model/AppUser.dart';
+import 'package:festivalapp/Model/app_user.dart';
 import 'package:festivalapp/common/widgets/screen_loader.dart';
 import 'package:festivalapp/views/root_page.dart';
 import 'package:festivalapp/views/auth/landingScreen/landing_screen.dart';
-import 'package:festivalapp/services/Auth/Authentication.dart';
+import 'package:festivalapp/services/Auth/authentication.dart';
 
 class SplashScreenWrapper extends StatefulWidget {
   const SplashScreenWrapper({Key? key}) : super(key: key);

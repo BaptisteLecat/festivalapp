@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:festivalapp/Model/AppUser.dart';
+import 'package:festivalapp/Model/app_user.dart';
 import 'package:festivalapp/common/widgets/loading.dart';
 import 'package:festivalapp/views/Auth/Login/login_screen.dart';
-import 'package:festivalapp/views/auth/Register/components/registerForm.dart';
+import 'package:festivalapp/views/auth/Register/components/register_form.dart';
 import '../../../../common/widgets/buttons/cta_button.dart';
 import '../../../../services/auth/authentication.dart';
 import 'package:festivalapp/common/constants/colors.dart';

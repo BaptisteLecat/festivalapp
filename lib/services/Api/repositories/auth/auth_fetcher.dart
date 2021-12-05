@@ -1,4 +1,4 @@
-import 'package:festivalapp/Model/AppUser.dart';
+import 'package:festivalapp/model/app_user.dart';
 import 'package:festivalapp/services/Api/main_fetcher.dart';
 
 class AuthFetcher extends MainFetcher {

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:festivalapp/common/error/api/ApiException.dart';
 import 'dart:convert';
 
-import 'package:festivalapp/services/Auth/SharedPreferences.dart';
+import 'package:festivalapp/services/Auth/shared_preferences.dart';
 
 import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:festivalapp/Model/AppUser.dart';
+import 'package:festivalapp/model/app_user.dart';
 import 'package:festivalapp/common/widgets/loading.dart';
 import 'package:festivalapp/views/auth/Register/register_screen.dart';
-import 'package:festivalapp/views/home/HomePage.dart';
+import 'package:festivalapp/views/home/home_page.dart''';
 import 'package:festivalapp/services/auth/shared_preferences.dart';
 import '../../../../common/widgets/buttons/cta_button.dart';
 import 'package:festivalapp/services/auth/authentication.dart';
@@ -116,7 +116,7 @@ class _BodyState extends State<Body> {
 
                   dynamic result = await widget._auth
                       .signInWithEmailAndPassword(email, password);
-                  if (!(result is User)) {
+                  if (!(result is AppUser)) {
                     print(result);
                     print("dsfsdf");
                     setState(() {

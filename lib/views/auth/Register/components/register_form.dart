@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:festivalapp/views/auth/Login/components/passwordHandler.dart';
+import 'package:festivalapp/views/auth/Login/components/password_handler.dart';
 import 'package:festivalapp/views/auth/Register/components/CGU.dart';
 
 class RegisterForm extends StatefulWidget {

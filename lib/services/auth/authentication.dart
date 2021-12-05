@@ -1,4 +1,4 @@
-import 'package:festivalapp/Model/AppUser.dart';
+import 'package:festivalapp/model/app_user.dart';
 import 'package:festivalapp/services/api/repositories/auth/auth_fetcher.dart';
 import 'package:festivalapp/services/api/repositories/user/UserFetcher.dart';
 import 'shared_preferences.dart';
