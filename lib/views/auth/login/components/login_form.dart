@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shophouse/common/constant/colors.dart';
-import 'package:shophouse/screens/auth/Login/components/passwordHandler.dart';
+import 'package:festivalapp/common/constants/colors.dart';
+import 'package:festivalapp/views/auth/login/components/password_handler.dart';
 
 class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;

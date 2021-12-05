@@ -1,3 +1,5 @@
+import 'package:festivalapp/services/api/repositories/user/UserFetcher.dart';
+import 'package:festivalapp/views/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/widgets/menu/fab_bottom_app_bar.dart';
@@ -31,13 +33,13 @@ class _RootPageState extends State<RootPage> {
         );
         break;
       case 1:
-        page = CartList();
+        page = HomePage();
         break;
       case 2:
-        page = FamilyPage();
+        page = HomePage();
         break;
       case 3:
-        page = AccountPage();
+        page = HomePage();
         break;
       default:
         page = HomePage(

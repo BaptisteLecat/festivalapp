@@ -6,7 +6,7 @@ import 'package:festivalapp/views/home/HomePage.dart';
 import 'package:festivalapp/services/auth/shared_preferences.dart';
 import '../../../../common/widgets/buttons/cta_button.dart';
 import 'package:festivalapp/services/auth/authentication.dart';
-import 'loginForm.dart';
+import 'package:festivalapp/views/auth/login/components/login_form.dart';
 import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/error/AuthException.dart';
 

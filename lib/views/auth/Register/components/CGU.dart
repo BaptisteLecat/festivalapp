@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shophouse/common/constant/colors.dart';
+import 'package:festivalapp/common/constants/colors.dart';
 
 class CGU extends StatefulWidget {
   bool isAcceptedCGU;

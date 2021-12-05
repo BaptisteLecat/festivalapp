@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shophouse/common/widgets/buttons/hidePassword_button.dart';
-import 'package:shophouse/common/widgets/inputs/input_password.dart';
+import 'package:festivalapp/common/widgets/buttons/hidePassword_button.dart';
+import 'package:festivalapp/common/widgets/inputs/input_password.dart';
 
 class PasswordHandler extends StatefulWidget {
   final TextEditingController passwordController;
