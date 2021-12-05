@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:festivalapp/screens/SplashScreenWrapper.dart';
+import 'package:festivalapp/views/splash_screen_wrapper.dart';
 import 'package:festivalapp/common/theme.dart';
 
 void main() async {
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       key: UniqueKey(),
       title: 'Flutter Demo',
-      home: SplashScreenWrapper(),
+      home: const SplashScreenWrapper(),
       debugShowCheckedModeBanner: false,
       theme: basicTheme(),
     );
