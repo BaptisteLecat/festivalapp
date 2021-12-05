@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:festivalapp/Model/AppUser.dart';
 import 'package:festivalapp/common/widgets/loading.dart';
 import 'package:festivalapp/views/Auth/Login/login_screen.dart';
-import 'package:festivalapp/views/splash_screen_wrapper.dart';
 import 'package:festivalapp/views/auth/Register/components/registerForm.dart';
 import '../../../../common/widgets/buttons/cta_button.dart';
 import '../../../../services/auth/authentication.dart';
-//import 'loginForm.dart';
 import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/error/AuthException.dart';
 

@@ -3,11 +3,11 @@ import 'package:festivalapp/Model/AppUser.dart';
 import 'package:festivalapp/common/widgets/loading.dart';
 import 'package:festivalapp/views/auth/Register/register_screen.dart';
 import 'package:festivalapp/views/home/HomePage.dart';
-import 'package:festivalapp/services/Auth/SharedPreferences.dart';
+import 'package:festivalapp/services/auth/shared_preferences.dart';
 import '../../../../common/widgets/buttons/cta_button.dart';
-import '../../../../services/auth/authentication.dart';
+import 'package:festivalapp/services/auth/authentication.dart';
 import 'loginForm.dart';
-import 'package:festivalapp/common/constant/colors.dart';
+import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/error/AuthException.dart';
 
 class Body extends StatefulWidget {
