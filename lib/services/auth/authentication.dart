@@ -1,8 +1,7 @@
 import 'package:festivalapp/Model/AppUser.dart';
-import 'package:festivalapp/common/error/AuthException.dart';
-import 'package:festivalapp/services/Api/repositories/auth/AuthFetcher.dart';
-import 'package:festivalapp/services/Api/repositories/user/UserFetcher.dart';
-import 'shared_preferences.dart'';
+import 'package:festivalapp/services/api/repositories/auth/auth_fetcher.dart';
+import 'package:festivalapp/services/api/repositories/user/UserFetcher.dart';
+import 'shared_preferences.dart';
 
 class AuthenticationService {
   Future<AppUser?> getCurrentUser() async {
