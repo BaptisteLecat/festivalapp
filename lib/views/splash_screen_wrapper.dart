@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:festivalapp/Model/AppUser.dart';
 import 'package:festivalapp/common/widgets/screen_loader.dart';
 import 'package:festivalapp/views/root_page.dart';
-import 'package:festivalapp/views/auth/LandingScreen/landing_screen.dart';
+import 'package:festivalapp/views/auth/landingScreen/landing_screen.dart';
 import 'package:festivalapp/services/Auth/Authentication.dart';
 
 class SplashScreenWrapper extends StatefulWidget {
