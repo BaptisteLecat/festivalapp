@@ -7,7 +7,7 @@ import 'package:festivalapp/views/auth/Register/components/registerForm.dart';
 import '../../../../common/widgets/buttons/cta_button.dart';
 import '../../../../services/auth/authentication.dart';
 //import 'loginForm.dart';
-import 'package:festivalapp/common/constant/colors.dart';
+import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/error/AuthException.dart';
 
 class Body extends StatefulWidget {
