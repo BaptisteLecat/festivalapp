@@ -1,4 +1,4 @@
-import 'package:shophouse/common/error/AppException.dart';
+import 'package:festivalapp/common/error/AppException.dart';
 
 class FetchDataException extends AppException {
   FetchDataException({required String message})
