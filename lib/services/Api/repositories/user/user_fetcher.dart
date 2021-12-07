@@ -6,20 +6,19 @@ class UserFetcher extends MainFetcher {
     setUserToken();
   }
 
-  Future<AppUser> whoAmI({String? id, String? email, String? token}) async {
-    final response = await post("login",
-        body: (id != null && email != null)
-            ? {"id": id, "email": email}
+  Future<AppUser> whoAmI({String? email, String? password, String? token}) async {
+    final response = await post("auth/login",
+        body: (email != null && password != null)
+            ? {"email": email, "password": password}
             : {"token": token});
     print(response);
     return AppUser.fromJson(response);
   }
 
-  Future<bool> register(
-      String id, String name, String firstName, String email) async {
+  Future<bool> register(String name, String firstName, String email, String password) async {
     bool registered = false;
-    final response = await post("register",
-        body: {"id": id, "name": name, "firstname": firstName, "email": email});
+    final response = await post("auth/register",
+        body: {"name": name, "firstname": firstName, "email": email, "password": password});
     print(response);
     if (response != null) {
       registered = true;
