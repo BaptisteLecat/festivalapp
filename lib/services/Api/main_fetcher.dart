@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:festivalapp/common/error/api/ApiException.dart';
+import 'package:festivalapp/common/error/api/api_exception.dart';
 import 'dart:convert';
 
 import 'package:festivalapp/services/Auth/shared_preferences.dart';
@@ -18,7 +18,7 @@ class MainFetcher {
     return "${this.apiUrl}/$subUrl";
   }
 
-  setUserToken() async {
+  _setUserToken() async {
     await SharedPreferencesUser().getToken().then((value) {
       print("test");
       if (value != "") {
@@ -34,6 +34,7 @@ class MainFetcher {
     var responseJson;
     try {
       print(_urlBuilder(url));
+      await _setUserToken();
       final response = await http.get(Uri.parse(_urlBuilder(url)),
           headers: headers == null
               ? {
@@ -66,6 +67,7 @@ class MainFetcher {
                   "Content-Type": "application/x-www-form-urlencoded",
                 }
           : headers);
+      await _setUserToken();
       final response = await http.post(Uri.parse(_urlBuilder(url)),
           headers: headers == null
               ? MainFetcher.userToken != "noToken"
@@ -126,6 +128,7 @@ class MainFetcher {
     var responseJson;
     try {
       print(_urlBuilder(url));
+      await _setUserToken();
       final response = await http.patch(Uri.parse(_urlBuilder(url)),
           headers: headers == null
               ? {
@@ -151,15 +154,15 @@ class MainFetcher {
         print("success");
         return returnedResponse;
       case 400:
-        throw BadRequestException(message: returnedResponse["error"]);
+        throw BadRequestException(message: returnedResponse["message"]);
       case 404:
-        throw BadRequestException(message: returnedResponse["error"]);
+        throw BadRequestException(message: returnedResponse["message"]);
       case 403:
-        throw UnauthorisedException(message: returnedResponse["error"]);
+        throw UnauthorisedException(message: returnedResponse["message"]);
       case 500:
       default:
         throw FetchDataException(
-            message: "${returnedResponse["error"]} : ${response.statusCode}");
+            message: "${returnedResponse["message"]} : ${response.statusCode}");
     }
   }
 }
