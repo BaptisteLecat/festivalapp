@@ -12,7 +12,7 @@ import 'package:async/async.dart';
 
 class MainFetcher {
   static String userToken = "noToken";
-  String apiUrl = "http://127.0.0.1/api/";
+  String apiUrl = "https://172.20.10.4:8000/api";
 
   String _urlBuilder(String subUrl) {
     return "${this.apiUrl}/$subUrl";
@@ -88,7 +88,7 @@ class MainFetcher {
     return responseJson;
   }
 
-  Future<dynamic> postFile(String url, File imageFile,
+  /*Future<dynamic> postFile(String url, File imageFile,
       {Map<String, String>? headers, Map<String, dynamic>? body}) async {
     var responseJson;
     try {
@@ -119,7 +119,7 @@ class MainFetcher {
       throw FetchDataException(message: 'No Internet connection');
     }
     return responseJson;
-  }
+  }*/
 
   Future<dynamic> patch(String url,
       {Map<String, String>? headers, Map<String, dynamic>? body}) async {
@@ -143,15 +143,8 @@ class MainFetcher {
     return responseJson;
   }
 
-  dynamic _returnResponse(dynamic response) async {
-    var returnedResponse;
-    if (response is http.StreamedResponse) {
-      http.Response.fromStream(response).then((test) {
-        returnedResponse = test;
-      });
-    } else {
-      returnedResponse = jsonDecode(response.body);
-    }
+  dynamic _returnResponse(http.Response response) async {
+    var returnedResponse = jsonDecode(response.body);
     print(response.statusCode);
     switch (response.statusCode) {
       case 200:
