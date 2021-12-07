@@ -1,6 +1,6 @@
 import 'package:festivalapp/model/app_user.dart';
 import 'package:festivalapp/services/api/repositories/auth/auth_fetcher.dart';
-import 'package:festivalapp/services/api/repositories/user/UserFetcher.dart';
+import 'package:festivalapp/services/api/repositories/user/user_fetcher.dart';
 import 'shared_preferences.dart';
 
 class AuthenticationService {
@@ -27,8 +27,8 @@ class AuthenticationService {
       AppUser? appUser = await AuthFetcher()
           .whoAmI(identifier: identifier, password: password);
       SharedPreferencesUser().setToken(appUser.jwt);
-      SharedPreferencesUser().setUserId(appUser.user.id);
-      return appUser.user;
+      SharedPreferencesUser().setUserId(appUser.id);
+      return appUser;
     } catch (e) {
       print(e);
       return e;
