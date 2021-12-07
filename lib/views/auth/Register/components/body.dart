@@ -1,3 +1,4 @@
+import 'package:festivalapp/common/error/app_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/Model/app_user.dart';
 import 'package:festivalapp/common/widgets/loading.dart';
@@ -6,7 +7,6 @@ import 'package:festivalapp/views/auth/Register/components/register_form.dart';
 import '../../../../common/widgets/buttons/cta_button.dart';
 import '../../../../services/auth/authentication.dart';
 import 'package:festivalapp/common/constants/colors.dart';
-import 'package:festivalapp/common/error/AuthException.dart';
 
 class Body extends StatefulWidget {
   final AuthenticationService _auth = AuthenticationService();
@@ -28,8 +28,7 @@ class _BodyState extends State<Body> {
   ///This function will be given to the child widget. It will update the value troughout the function.
   _updateErrorCodeState(String errorCode) {
     setState(() {
-      widget.error = AuthException.generateExceptionMessage(
-          AuthException.handleException(errorCode));
+      widget.error = "Une erreur est survenue";
     });
   }
 
@@ -129,17 +128,18 @@ class _BodyState extends State<Body> {
 
                   dynamic result = await widget._auth
                       .registerInWithEmailAndPassword(
-                          name, firstname, email, password);
-                  if (!(result is bool) && result == false) {
-                    setState(() {
-                      widget.loading = false;
-                      widget.error =
-                          AuthException.generateExceptionMessage(result);
-                    });
-                  } else {
+                          name, firstname, email, password)
+                      .then((value) {
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => LoginScreen()));
-                  }
+                  }).onError((AppException error, stackTrace) {
+                    setState(() {
+                      widget.loading = false;
+                      widget.error = (error.message != null)
+                          ? error.message!
+                          : "Une erreur est survenue";
+                    });
+                  });
                 } else {
                   FocusScope.of(context).requestFocus(new FocusNode());
                 }

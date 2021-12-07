@@ -6,43 +6,31 @@ import 'shared_preferences.dart';
 class AuthenticationService {
   Future<AppUser?> getCurrentUser() async {
     dynamic user;
-    await SharedPreferencesUser().setToken("noToken");
-          return await SharedPreferencesUser().getToken().then((token) async {
-            if (token != null) {
-              print(token);
-              await AuthFetcher().whoAmI(token: token).then((appUser) {
-                user = appUser;
-              }).onError((error, stackTrace) {
-                return null;
-              });
-              return user;
-            } else {
-              return null;
-            }
+    return await SharedPreferencesUser().getToken().then((token) async {
+      if (token != null) {
+        print(token);
+        await AuthFetcher().whoAmI(token: token).then((appUser) {
+          user = appUser;
+        }).onError((error, stackTrace) {
+          return null;
+        });
+        return user;
+      } else {
+        return null;
+      }
     });
   }
 
-  Future signInWithEmailAndPassword(String email, String password) async {
-    try {
-      AppUser? appUser = await AuthFetcher()
-          .whoAmI(email: email, password: password);
-      SharedPreferencesUser().setToken(appUser.jwt);
-      SharedPreferencesUser().setUserId(appUser.id);
-      return appUser;
-    } catch (e) {
-      print(e);
-      return e;
-    }
+  Future<AppUser?> signInWithEmailAndPassword(
+      String email, String password) async {
+    AppUser? appUser =
+        await AuthFetcher().whoAmI(email: email, password: password);
+    await SharedPreferencesUser().setToken(appUser.jwt);
+    return appUser;
   }
 
   Future registerInWithEmailAndPassword(
       String name, String firstname, String email, String password) async {
-    try {
-      bool success = await AuthFetcher().register(name, firstname, email, password);
-      return success;
-    } catch (e) {
-      print(e.toString());
-      return e;
-    }
+    return await AuthFetcher().register(name, firstname, email, password);
   }
 }

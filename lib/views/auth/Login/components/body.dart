@@ -1,14 +1,14 @@
+import 'package:festivalapp/common/error/app_exception.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/model/app_user.dart';
 import 'package:festivalapp/common/widgets/loading.dart';
 import 'package:festivalapp/views/auth/Register/register_screen.dart';
-import 'package:festivalapp/views/home/home_page.dart''';
+import 'package:festivalapp/views/home/home_page.dart' '';
 import 'package:festivalapp/services/auth/shared_preferences.dart';
 import '../../../../common/widgets/buttons/cta_button.dart';
 import 'package:festivalapp/services/auth/authentication.dart';
 import 'package:festivalapp/views/auth/login/components/login_form.dart';
 import 'package:festivalapp/common/constants/colors.dart';
-import 'package:festivalapp/common/error/AuthException.dart';
 
 class Body extends StatefulWidget {
   final AuthenticationService _auth = AuthenticationService();
@@ -114,22 +114,21 @@ class _BodyState extends State<Body> {
                         .setStayConnected(widget.stayConnected);
                   }
 
-                  dynamic result = await widget._auth
-                      .signInWithEmailAndPassword(email, password);
-                  if (!(result is AppUser)) {
-                    print(result);
-                    print("dsfsdf");
+                  await widget._auth
+                      .signInWithEmailAndPassword(email, password)
+                      .then((appUser) {
+                    if (appUser != null) {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    }
+                  }).onError((AppException error, stackTrace) {
                     setState(() {
                       widget.loading = false;
-                      widget.error =
-                          AuthException.generateExceptionMessage(result);
+                      widget.error = (error.message != null)
+                          ? error.message!
+                          : "Une erreur est survenue";
                     });
-                  } else {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePage()));
-                  }
+                  });
                 }
               },
               content: Text(
