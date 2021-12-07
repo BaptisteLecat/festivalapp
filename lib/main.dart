@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       key: UniqueKey(),
-      title: 'Flutter Demo',
+      title: 'FestivApp',
       home: const SplashScreenWrapper(),
       debugShowCheckedModeBanner: false,
       theme: basicTheme(),

@@ -33,7 +33,7 @@ class Body extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Discutez facilement",
+            "L'application pour faire la fête",
             style: TextStyle(
               fontFamily: 'Poppins',
               color: const Color(0xff3D5382),
@@ -46,7 +46,7 @@ class Body extends StatelessWidget {
             height: 15,
           ),
           Text(
-            "Gardez du lien avec vos amis",
+            "Suivez facilement tous vos événements",
             style: TextStyle(
               fontFamily: 'Poppins',
               color: const Color(0x993D5382),
@@ -117,7 +117,7 @@ class Body extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               _buildTitleText(
-                  "EPSI", "TCHAT", Color(0xffFDAB53), Color(0xff3D5382)),
+                  "FESTIV", "APP", Color(0xffFDAB53), Color(0xff3D5382)),
               _buildInfoText(),
               _buildAuthButtons(context),
             ],
