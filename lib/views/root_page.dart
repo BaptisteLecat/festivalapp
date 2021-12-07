@@ -1,4 +1,4 @@
-import 'package:festivalapp/services/api/repositories/user/UserFetcher.dart';
+import 'package:festivalapp/services/api/repositories/user/user_fetcher.dart';
 import 'package:festivalapp/views/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/common/constants/colors.dart';
