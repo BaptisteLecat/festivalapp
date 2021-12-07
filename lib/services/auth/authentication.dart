@@ -10,7 +10,7 @@ class AuthenticationService {
           return await SharedPreferencesUser().getToken().then((token) async {
             if (token != null) {
               print(token);
-              await UserFetcher().whoAmI(token: token).then((appUser) {
+              await AuthFetcher().whoAmI(token: token).then((appUser) {
                 user = appUser;
               }).onError((error, stackTrace) {
                 return null;
@@ -22,10 +22,10 @@ class AuthenticationService {
     });
   }
 
-  Future signInWithEmailAndPassword(String identifier, String password) async {
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
       AppUser? appUser = await AuthFetcher()
-          .whoAmI(identifier: identifier, password: password);
+          .whoAmI(email: email, password: password);
       SharedPreferencesUser().setToken(appUser.jwt);
       SharedPreferencesUser().setUserId(appUser.id);
       return appUser;
@@ -36,9 +36,9 @@ class AuthenticationService {
   }
 
   Future registerInWithEmailAndPassword(
-      String email, String password, String userName) async {
+      String name, String firstname, String email, String password) async {
     try {
-      bool success = await AuthFetcher().register(userName, email, password);
+      bool success = await AuthFetcher().register(name, firstname, email, password);
       return success;
     } catch (e) {
       print(e.toString());

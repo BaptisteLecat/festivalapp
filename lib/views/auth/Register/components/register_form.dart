@@ -58,7 +58,7 @@ class _RegisterFormState extends State<RegisterForm> {
             direction: Axis.horizontal,
             children: [
               Expanded(
-                child: Container(
+                child: SizedBox(
                   height: 60,
                   child: TextFormField(
                     keyboardType: TextInputType.name,
@@ -66,25 +66,43 @@ class _RegisterFormState extends State<RegisterForm> {
                     controller: widget.nameController,
                     autofocus: true,
                     cursorColor: const Color(0xff3D5382),
-                    style: TextStyle(
-                      color: const Color(0xff3D5382),
+                    style: const TextStyle(
+                      color: Color(0xff3D5382),
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     ),
-                    decoration: _inputDecorationBuilder(hintText: 'Nom d\'utilisateur'),
+                    decoration: _inputDecorationBuilder(hintText: 'Nom'),
                   ),
                 ),
               ),
               const SizedBox(
                 width: 15,
               ),
+              Expanded(
+                child: SizedBox(
+                  height: 60,
+                  child: TextFormField(
+                    keyboardType: TextInputType.name,
+                    textInputAction: TextInputAction.next,
+                    controller: widget.firstNameController,
+                    autofocus: true,
+                    cursorColor: const Color(0xff3D5382),
+                    style: const TextStyle(
+                      color: Color(0xff3D5382),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    decoration: _inputDecorationBuilder(hintText: 'Prénom'),
+                  ),
+                ),
+              )
             ],
           ),
           const SizedBox(
             height: 10,
           ),
           /** Section for the Email */
-          Container(
+          SizedBox(
             height: 60,
             child: TextFormField(
               keyboardType: TextInputType.emailAddress,
@@ -92,8 +110,8 @@ class _RegisterFormState extends State<RegisterForm> {
               controller: widget.emailController,
               autofocus: true,
               cursorColor: const Color(0xff3D5382),
-              style: TextStyle(
-                color: const Color(0xff3D5382),
+              style: const TextStyle(
+                color: Color(0xff3D5382),
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
               ),
@@ -124,23 +142,23 @@ class _RegisterFormState extends State<RegisterForm> {
       filled: true,
       fillColor: const Color(0xffEEEEEE),
       hintText: hintText,
-      hintStyle: TextStyle(
-        color: const Color(0x993D5382),
+      hintStyle: const TextStyle(
+        color: Color(0x993D5382),
         fontSize: 18,
         fontWeight: FontWeight.w400,
       ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      enabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         borderSide: BorderSide(
           width: 1.5,
-          color: const Color(0xffC5CCDA),
+          color: Color(0xffC5CCDA),
         ),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         borderSide: BorderSide(
           width: 1.5,
-          color: const Color(0xff3D5382),
+          color: Color(0xff3D5382),
         ),
       ),
     );

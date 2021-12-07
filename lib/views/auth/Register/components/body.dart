@@ -86,12 +86,12 @@ class _BodyState extends State<Body> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
+        children: const [
           Text(
             "Créez un compte",
             textAlign: TextAlign.start,
             style: TextStyle(
-                color: const Color(0xff3D5382),
+                color: Color(0xff3D5382),
                 fontSize: 24,
                 fontWeight: FontWeight.bold),
           ),
@@ -100,7 +100,7 @@ class _BodyState extends State<Body> {
             "Bienvenue ! Créez un compte pour commencer votre discussion.",
             textAlign: TextAlign.start,
             style: TextStyle(
-                color: const Color(0x993D5382),
+                color: Color(0x993D5382),
                 fontSize: 18,
                 fontWeight: FontWeight.w400),
           ),
@@ -122,13 +122,14 @@ class _BodyState extends State<Body> {
                   setState(() {
                     widget.loading = true;
                   });
+                  var name = widget.nameController.value.text;
+                  var firstname = widget.firstNameController.value.text;
                   var password = widget.passwordController.value.text;
                   var email = widget.emailController.value.text;
-                  var userName = widget.nameController.value.text;
 
                   dynamic result = await widget._auth
                       .registerInWithEmailAndPassword(
-                          email, password, userName);
+                          name, firstname, email, password);
                   if (!(result is bool) && result == false) {
                     setState(() {
                       widget.loading = false;
@@ -136,16 +137,14 @@ class _BodyState extends State<Body> {
                           AuthException.generateExceptionMessage(result);
                     });
                   } else {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LoginScreen()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
                   }
                 } else {
                   FocusScope.of(context).requestFocus(new FocusNode());
                 }
               },
-              content: Text(
+              content: const Text(
                 "Enregistrement",
                 style: TextStyle(color: Colors.white, fontSize: 22),
               )),
@@ -154,11 +153,11 @@ class _BodyState extends State<Body> {
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => LoginScreen()));
               },
-              child: Text(
+              child: const Text(
                 "Vous avez déjà un compte?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: const Color(0xff3D5382),
+                    color: Color(0xff3D5382),
                     fontSize: 16,
                     fontWeight: FontWeight.normal),
               ))
@@ -171,7 +170,7 @@ class _BodyState extends State<Body> {
     return Text(
       errorMessage,
       textAlign: TextAlign.center,
-      style: TextStyle(
+      style: const TextStyle(
           color: errorMessageColor,
           fontSize: 16,
           fontWeight: FontWeight.normal),
