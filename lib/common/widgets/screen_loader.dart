@@ -1,3 +1,4 @@
+import 'package:festivalapp/common/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class ScreenLoader extends StatefulWidget {
@@ -79,7 +80,7 @@ class _ScreenLoaderState extends State<ScreenLoader>
                 child: Transform.translate(
                   offset: Offset(0, animation.value),
                   child: _buildTitleText(
-                      "FESTIV", "APP", Color(0xffFDAB53), Color(0xff3D5382)),
+                      "FESTIV", "APP", primaryColor, secondaryColor),
                 ),
               ),
             ]));
