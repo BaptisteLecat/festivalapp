@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'inputDecoration/defaultDecoration.dart';
+import 'inputDecoration/default_decoration.dart';
 
 class InputPassword extends StatefulWidget {
   final TextEditingController controller;

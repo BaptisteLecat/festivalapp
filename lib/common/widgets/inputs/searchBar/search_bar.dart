@@ -1,5 +1,5 @@
 import 'package:festivalapp/common/constants/colors.dart';
-import 'package:festivalapp/common/widgets/inputs/inputDecoration/defaultDecoration.dart';
+import 'package:festivalapp/common/widgets/inputs/inputDecoration/default_decoration.dart';
 import 'package:flutter/material.dart';
 
 class SearchBar extends StatelessWidget {
