@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:festivalapp/common/widgets/inputs/searchBar/search_bar.dart';
+import 'package:festivalapp/views/home/tagFilter/tag_filter.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
           title: Text("Discussion"),
         ),
         body: Column(
-          children: [SearchBar()],
+          children: [SearchBar(), TagFilter()],
         ));
   }
 }

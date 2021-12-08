@@ -37,7 +37,7 @@ ThemeData basicTheme() {
           fontWeight: FontWeight.w400),
       bodyText1: TextStyle(
         fontFamily: 'Poppins',
-        fontSize: 14.0,
+        fontSize: 15.0,
         color: bodyTextColor,
       ),
       bodyText2: TextStyle(
