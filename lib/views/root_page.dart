@@ -1,5 +1,7 @@
 import 'package:festivalapp/services/api/repositories/user/user_fetcher.dart';
+import 'package:festivalapp/views/account/account_page.dart';
 import 'package:festivalapp/views/home/home_page.dart';
+import 'package:festivalapp/views/ticket/ticket_page.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/widgets/menu/fab_bottom_app_bar.dart';
@@ -33,13 +35,10 @@ class _RootPageState extends State<RootPage> {
         );
         break;
       case 1:
-        page = HomePage();
+        page = TicketPage();
         break;
       case 2:
-        page = HomePage();
-        break;
-      case 3:
-        page = HomePage();
+        page = AccountPage();
         break;
       default:
         page = HomePage(
@@ -65,45 +64,35 @@ class _RootPageState extends State<RootPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: FABBottomAppBar(
-          backgroundColor: Colors.white,
-          color: Colors.black,
+          backgroundColor: secondaryColor,
+          color: Colors.white,
           selectedColor: primaryColor,
           notchedShape: CircularNotchedRectangle(),
           onTabSelected: _selectedTab,
           items: [
             FABBottomAppBarItem(
-                iconData: AssetImage("assets/icons/menu/home.png"),
+                iconData: const AssetImage("assets/icons/menu/home.png"),
                 selectedIconData:
-                    AssetImage("assets/icons/menu/home_selected.png"),
+                    const AssetImage("assets/icons/menu/home_selected.png"),
                 text: 'Home'),
             FABBottomAppBarItem(
-                iconData: AssetImage("assets/icons/menu/shopping-cart.png"),
+                iconData: const AssetImage("assets/icons/menu/user.png"),
                 selectedIconData:
-                    AssetImage("assets/icons/menu/shopping-cart_selected.png"),
-                text: 'Cart'),
-            FABBottomAppBarItem(
-                iconData: AssetImage("assets/icons/menu/family.png"),
-                selectedIconData:
-                    AssetImage("assets/icons/menu/family_selected.png"),
-                text: 'Family'),
-            FABBottomAppBarItem(
-                iconData: AssetImage("assets/icons/menu/user.png"),
-                selectedIconData:
-                    AssetImage("assets/icons/menu/user_selected.png"),
+                    const AssetImage("assets/icons/menu/user_selected.png"),
                 text: 'Account'),
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Container(
+        floatingActionButton: SizedBox(
           width: 64.0,
           height: 64.0,
-          child: new FloatingActionButton(
+          child: FloatingActionButton(
             backgroundColor: primaryColor,
-            shape: new CircleBorder(),
+            shape: const CircleBorder(),
             elevation: 0.0,
             child: Padding(
-                padding: EdgeInsets.all(14),
-                child: Image.asset("assets/icons/menu/search.png")),
+                padding: const EdgeInsets.all(14),
+                child: Image.asset("assets/icons/menu/ticket.png")),
             onPressed: () {},
           ),
         ),

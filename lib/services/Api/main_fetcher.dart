@@ -12,7 +12,7 @@ import 'package:async/async.dart';
 
 class MainFetcher {
   static String userToken = "noToken";
-  String apiUrl = "https://172.20.10.4:8000/api";
+  String apiUrl = "https://10.0.3.148:8000/api";
 
   String _urlBuilder(String subUrl) {
     return "${this.apiUrl}/$subUrl";

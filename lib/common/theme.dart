@@ -63,7 +63,7 @@ ThemeData basicTheme() {
           cursorColor: primaryColor, selectionColor: primaryColor),
       //primaryColor: Color(0xff4829b2),
       indicatorColor: Color(0xFF807A6B),
-      scaffoldBackgroundColor: Color(0xFFF5F5F5),
+      scaffoldBackgroundColor: backgroundColor,
       accentColor: Color(0xFFFFF8E1),
       iconTheme: IconThemeData(
         color: Colors.white,
