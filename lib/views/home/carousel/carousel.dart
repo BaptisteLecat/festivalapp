@@ -33,7 +33,8 @@ class _CarouselState extends State<Carousel> {
             } else {
               List<Event> listEvents = snapshot.data as List<Event>;
               return CarouselSlider(
-                options: CarouselOptions(height: 400.0),
+                options:
+                    CarouselOptions(height: 400.0, enlargeCenterPage: true),
                 items: listEvents.map((event) {
                   return Builder(
                     builder: (BuildContext context) {

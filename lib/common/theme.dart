@@ -12,23 +12,23 @@ ThemeData basicTheme() {
       headline2: TextStyle(
         fontFamily: 'Poppins',
         fontSize: 26.0,
-        color: secondaryColor,
+        color: Colors.white,
       ),
       headline3: TextStyle(
         fontFamily: 'Poppins',
         fontSize: 24.0,
         fontWeight: FontWeight.w600,
-        color: secondaryColor,
+        color: Colors.white,
       ),
       headline4: TextStyle(
         fontFamily: 'Poppins',
         fontSize: 22.0,
-        color: secondaryColor,
+        color: Colors.white,
       ),
       headline5: TextStyle(
         fontFamily: 'Poppins',
         fontSize: 20.0,
-        color: secondaryColor,
+        color: Colors.white,
       ),
       headline6: TextStyle(
           fontFamily: 'Poppins',
