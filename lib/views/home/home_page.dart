@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:festivalapp/common/widgets/inputs/searchBar/search_bar.dart';
+import 'package:festivalapp/model/music_gender.dart';
 import 'package:festivalapp/views/home/carousel/carousel.dart';
 import 'package:festivalapp/views/home/tagFilter/tag_filter.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool showLoader = false;
   late Timer timer;
+  MusicGender? selectedMusicGender;
 
   @override
   void initState() {
@@ -24,6 +26,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void _updateSelectedMusicGender(MusicGender musicGender) {
+    setState(() {
+      this.selectedMusicGender = musicGender;
+    });
   }
 
   @override
@@ -40,13 +48,18 @@ class _HomePageState extends State<HomePage> {
                     child: Flex(
                         direction: Axis.vertical,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          Flexible(
+                        children: [
+                          const Flexible(
                               flex: 2,
                               child: Padding(
                                   padding: const EdgeInsets.only(right: 20),
                                   child: SearchBar())),
-                          Flexible(flex: 2, child: TagFilter()),
+                          Flexible(
+                              flex: 2,
+                              child: TagFilter(
+                                updateMusicGender:
+                                    this._updateSelectedMusicGender,
+                              )),
                         ])))),
         Flexible(
           flex: 3,

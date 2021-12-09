@@ -14,7 +14,7 @@ class MusicGender {
     required this.label,
   });
 
-  int id;
+  int? id;
   String label;
 
   factory MusicGender.fromJson(Map<String, dynamic> json) => MusicGender(

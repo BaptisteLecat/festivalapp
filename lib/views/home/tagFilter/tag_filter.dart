@@ -4,19 +4,42 @@ import 'package:festivalapp/views/home/tagFilter/components/tag.dart';
 import 'package:flutter/material.dart';
 
 class TagFilter extends StatefulWidget {
-  const TagFilter({Key? key}) : super(key: key);
+  final ValueChanged<MusicGender> updateMusicGender;
+  const TagFilter({Key? key, required this.updateMusicGender})
+      : super(key: key);
 
   @override
   _TagFilterState createState() => _TagFilterState();
 }
 
 class _TagFilterState extends State<TagFilter> {
+  int _selectedIndex = 0;
+  late Future<List<MusicGender>> _tagsData;
+  List<MusicGender> listTags = [];
+  bool startInit = true;
+
+  @override
+  void initState() {
+    _tagsData = MusicGenderFetcher().getMusicGenderList();
+    super.initState();
+  }
+
+  void selectTag(int index) {
+    print(index);
+    _selectedIndex = index;
+    widget.updateMusicGender(listTags[_selectedIndex]);
+  }
+
+  bool _isSelected(index) {
+    return index == _selectedIndex;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 40,
       child: FutureBuilder(
-          future: MusicGenderFetcher().getMusicGenderList(),
+          future: _tagsData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const SizedBox(
@@ -33,15 +56,21 @@ class _TagFilterState extends State<TagFilter> {
                   child: Text("Une erreur est survenue."),
                 );
               } else {
-                List<MusicGender> listMusicGenders =
-                    snapshot.data as List<MusicGender>;
+                listTags = snapshot.data as List<MusicGender>;
+                if (this.startInit) {
+                  listTags.insert(0, MusicGender(id: null, label: "Tout"));
+                  this.startInit = false;
+                }
                 return ListView.builder(
-                    itemCount: listMusicGenders.length,
+                    itemCount: listTags.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return Tag(
-                          content: listMusicGenders[index].label,
-                          isSelected: false);
+                        content: listTags[index].label,
+                        isSelected: this._isSelected(index),
+                        itemIndex: index,
+                        selectedCategoryCallBack: this.selectTag,
+                      );
                     });
               }
             }
