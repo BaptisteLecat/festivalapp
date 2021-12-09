@@ -10,10 +10,9 @@ class SearchBar extends StatelessWidget {
     TextEditingController searchEditingController = TextEditingController();
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12),
-      width: 260,
       height: 60,
       decoration: BoxDecoration(
-          color: secondaryColor, borderRadius: BorderRadius.circular(18)),
+          color: secondaryColor, borderRadius: BorderRadius.circular(24)),
       child: Row(children: [
         SizedBox(
             height: 20, child: Image.asset("assets/icons/menu/search.png")),

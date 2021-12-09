@@ -19,7 +19,7 @@ class _TagState extends State<Tag> {
       color = primaryColor;
     }
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         margin: const EdgeInsets.symmetric(horizontal: 6),
         decoration: (widget.isSelected)
             ? const BoxDecoration(

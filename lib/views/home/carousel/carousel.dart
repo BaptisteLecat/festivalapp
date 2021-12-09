@@ -19,9 +19,11 @@ class _CarouselState extends State<Carousel> {
         future: EventFetcher().getEventList(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const SizedBox(
+                height: 400,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ));
           } else {
             if (snapshot.hasError ||
                 !snapshot.hasData ||
@@ -33,33 +35,45 @@ class _CarouselState extends State<Carousel> {
             } else {
               List<Event> listEvents = snapshot.data as List<Event>;
               return CarouselSlider(
-                options:
-                    CarouselOptions(height: 400.0, enlargeCenterPage: true),
+                options: CarouselOptions(
+                    autoPlayCurve: Curves.easeInOutQuart,
+                    autoPlayInterval: const Duration(seconds: 3),
+                    autoPlay: true,
+                    height: 400.0,
+                    viewportFraction: 0.7,
+                    enlargeCenterPage: true),
                 items: listEvents.map((event) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
                           width: MediaQuery.of(context).size.width,
                           margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: const BoxDecoration(color: Colors.amber),
+                          decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(28))),
                           child: (event.picture != null)
                               ? Stack(
                                   fit: StackFit.expand,
                                   children: [
-                                    Image.memory(
-                                      event.getPictureEncoded(),
-                                      fit: BoxFit.fill,
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(28),
+                                      child: Image.memory(
+                                        event.getPictureEncoded(),
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
                                     Positioned(
-                                        left: 0,
-                                        bottom: 0,
+                                        left: 10,
+                                        bottom: 14,
                                         child: Column(
                                           children: [
                                             Text(
                                               event.getDateOfEvent(),
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .headline5,
+                                                  .headline6!
+                                                  .copyWith(
+                                                      color: Colors.white),
                                             ),
                                             Text(
                                               event.name,
