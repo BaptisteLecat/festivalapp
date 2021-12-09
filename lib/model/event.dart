@@ -2,11 +2,13 @@
 //
 //     final event = eventFromJson(jsonString);
 
+import 'dart:convert';
+
 import 'dart:typed_data';
 
 import 'package:festivalapp/common/constants/data.dart';
-import 'package:meta/meta.dart';
-import 'dart:convert';
+import 'package:festivalapp/model/artist.dart';
+import 'package:festivalapp/model/music_gender.dart';
 
 List<Event> listEventFromJson(dynamic str) =>
     List<Event>.from(str.map((x) => Event.fromJson(x)));
@@ -23,31 +25,42 @@ class Event {
     required this.picture,
     required this.name,
     required this.endDate,
+    required this.musicgenders,
   });
 
   int id;
-  List<Artist> artists;
+  List<Artist>? artists;
   DateTime date;
+  String picture;
   String name;
-  String? picture;
   DateTime endDate;
+  List<Musicgender>? musicgenders;
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
-      id: json["id"],
-      artists:
-          List<Artist>.from(json["artists"].map((x) => Artist.fromJson(x))),
-      date: DateTime.parse(json["date"]),
-      name: json["name"],
-      picture: json["picture"],
-      endDate: DateTime.parse(json["endDate"]));
+        id: json["id"],
+        artists: json["artists"] == null
+            ? null
+            : List<Artist>.from(json["artists"].map((x) => Artist.fromJson(x))),
+        date: DateTime.parse(json["date"]),
+        picture: json["picture"] == null ? null : json["picture"],
+        name: json["name"],
+        endDate: DateTime.parse(json["endDate"]),
+        musicgenders: json["musicgenders"] == null
+            ? null
+            : List<Musicgender>.from(
+                json["musicgenders"].map((x) => Musicgender.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "artists": List<dynamic>.from(artists.map((x) => x.toJson())),
+        "artists": List<dynamic>.from(artists!.map((x) => x.toJson())),
         "date": date.toIso8601String(),
         "name": name,
-        "picture": (picture != null) ? picture : "",
+        "picture": (picture != null) ? picture : null,
         "endDate": endDate.toIso8601String(),
+        "musicgenders": musicgenders == null
+            ? null
+            : List<dynamic>.from(musicgenders!.map((x) => x.toJson())),
       };
 
   String _getMonth(int index) {
@@ -60,33 +73,9 @@ class Event {
 
   Uint8List getPictureEncoded() {
     if (picture != null) {
-      return const Base64Decoder().convert(picture!);
+      return const Base64Decoder().convert(picture);
     } else {
       throw Exception("Aucune image disponible");
     }
   }
-}
-
-class Artist {
-  Artist({
-    required this.id,
-    required this.name,
-    required this.musicGenders,
-  });
-
-  int id;
-  String name;
-  List<dynamic> musicGenders;
-
-  factory Artist.fromJson(Map<String, dynamic> json) => Artist(
-        id: json["id"],
-        name: json["name"],
-        musicGenders: List<dynamic>.from(json["musicGenders"].map((x) => x)),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "musicGenders": List<dynamic>.from(musicGenders.map((x) => x)),
-      };
 }
