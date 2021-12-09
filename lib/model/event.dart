@@ -34,7 +34,7 @@ class Event {
   String picture;
   String name;
   DateTime endDate;
-  List<Musicgender>? musicgenders;
+  List<MusicGender>? musicgenders;
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
         id: json["id"],
@@ -47,8 +47,8 @@ class Event {
         endDate: DateTime.parse(json["endDate"]),
         musicgenders: json["musicgenders"] == null
             ? null
-            : List<Musicgender>.from(
-                json["musicgenders"].map((x) => Musicgender.fromJson(x))),
+            : List<MusicGender>.from(
+                json["musicgenders"].map((x) => MusicGender.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

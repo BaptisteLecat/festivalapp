@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:festivalapp/model/music_gender.dart';
 
@@ -19,7 +20,7 @@ class Artist {
 
   int id;
   String name;
-  List<Musicgender>? musicGenders;
+  List<MusicGender>? musicGenders;
   dynamic picture;
 
   factory Artist.fromJson(Map<String, dynamic> json) => Artist(
@@ -27,7 +28,7 @@ class Artist {
         name: (json["name"] == null) ? null : json["name"],
         musicGenders: (json["musicGenders"] == null)
             ? null
-            : List<Musicgender>.from(json["musicGenders"].map((x) => x)),
+            : List<MusicGender>.from(json["musicGenders"].map((x) => x)),
         picture: json["picture"],
       );
 
@@ -36,7 +37,15 @@ class Artist {
         "name": (name == null) ? null : name,
         "musicGenders": musicGenders == null
             ? null
-            : List<Musicgender>.from(musicGenders!.map((x) => x)),
+            : List<MusicGender>.from(musicGenders!.map((x) => x)),
         "picture": picture,
       };
+
+  Uint8List getPictureEncoded() {
+    if (picture != null) {
+      return const Base64Decoder().convert(picture);
+    } else {
+      throw Exception("Aucune image disponible");
+    }
+  }
 }

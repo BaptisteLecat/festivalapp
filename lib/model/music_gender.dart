@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-List<Musicgender> listMusicgenderFromJson(dynamic str) =>
-    List<Musicgender>.from(str.map((x) => Musicgender.fromJson(x)));
+List<MusicGender> listMusicgenderFromJson(dynamic str) =>
+    List<MusicGender>.from(str.map((x) => MusicGender.fromJson(x)));
 
-Musicgender musicGenderFromJson(String str) =>
-    Musicgender.fromJson(json.decode(str));
+MusicGender musicGenderFromJson(String str) =>
+    MusicGender.fromJson(json.decode(str));
 
-String musicGenderToJson(Musicgender data) => json.encode(data.toJson());
+String musicGenderToJson(MusicGender data) => json.encode(data.toJson());
 
-class Musicgender {
-  Musicgender({
+class MusicGender {
+  MusicGender({
     required this.id,
     required this.label,
   });
@@ -17,7 +17,7 @@ class Musicgender {
   int id;
   String label;
 
-  factory Musicgender.fromJson(Map<String, dynamic> json) => Musicgender(
+  factory MusicGender.fromJson(Map<String, dynamic> json) => MusicGender(
         id: (json["id"] == null) ? null : json["id"],
         label: (json["label"] == null) ? null : json["label"],
       );
