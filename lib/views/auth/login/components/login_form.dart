@@ -1,3 +1,4 @@
+import 'package:festivalapp/common/widgets/inputs/inputDecoration/advanced_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/views/auth/login/components/password_handler.dart';
@@ -30,30 +31,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   InputDecoration _inputDecorationBuilder({required String hintText}) {
-    return InputDecoration(
-      filled: true,
-      fillColor: const Color(0xffEEEEEE),
-      hintText: hintText,
-      hintStyle: TextStyle(
-        color: const Color(0x993D5382),
-        fontSize: 18,
-        fontWeight: FontWeight.w400,
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(
-          width: 1.5,
-          color: const Color(0xffC5CCDA),
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        borderSide: BorderSide(
-          width: 1.5,
-          color: const Color(0xff3D5382),
-        ),
-      ),
-    );
+    return AdvancedDecoration.inputDecoration(hintText: hintText);
   }
 
   @override

@@ -1,5 +1,5 @@
+import 'package:festivalapp/common/widgets/inputs/inputDecoration/advanced_decoration.dart';
 import 'package:flutter/material.dart';
-import 'inputDecoration/default_decoration.dart';
 
 class InputPassword extends StatefulWidget {
   final TextEditingController controller;
@@ -37,7 +37,7 @@ class _InputPasswordState extends State<InputPassword> {
         fontSize: 18,
         fontWeight: FontWeight.w400,
       ),
-      decoration: DefaultDecoration.inputDecoration(hintText: widget.hintText),
+      decoration: AdvancedDecoration.inputDecoration(hintText: widget.hintText),
     );
   }
 }

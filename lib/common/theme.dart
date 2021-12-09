@@ -6,7 +6,7 @@ ThemeData basicTheme() {
     return base.copyWith(
       headline1: TextStyle(
           fontFamily: 'Poppins',
-          color: const Color(0xff3D5382),
+          color: Colors.white,
           fontSize: 24,
           fontWeight: FontWeight.bold),
       headline2: TextStyle(
