@@ -12,7 +12,7 @@ import 'package:async/async.dart';
 
 class MainFetcher {
   static String userToken = "noToken";
-  String apiUrl = "https://10.0.3.148:8000/api";
+  String apiUrl = "https://10.0.3.87:8000/api";
 
   String _urlBuilder(String subUrl) {
     return "${this.apiUrl}/$subUrl";
@@ -25,16 +25,22 @@ class MainFetcher {
         MainFetcher.userToken = value!;
       }
     }).onError((error, stackTrace) {
+      print(error);
       throw Exception("Aucun token fournit.");
     });
   }
 
-  Future<dynamic> get(String url, [Map<String, String>? headers]) async {
+  Future<dynamic> get(
+      {required String url,
+      Map<String, String>? headers,
+      bool? noToken = false}) async {
     print(MainFetcher.userToken);
     var responseJson;
     try {
       print(_urlBuilder(url));
-      await _setUserToken();
+      if (!noToken!) {
+        await _setUserToken();
+      }
       final response = await http.get(Uri.parse(_urlBuilder(url)),
           headers: headers == null
               ? {
@@ -50,8 +56,11 @@ class MainFetcher {
     return responseJson;
   }
 
-  Future<dynamic> post(String url,
-      {Map<String, String>? headers, Map<String, dynamic>? body}) async {
+  Future<dynamic> post(
+      {required String url,
+      Map<String, String>? headers,
+      Map<String, dynamic>? body,
+      bool? noToken = false}) async {
     var responseJson;
     try {
       print(_urlBuilder(url));
@@ -67,7 +76,9 @@ class MainFetcher {
                   "Content-Type": "application/x-www-form-urlencoded",
                 }
           : headers);
-      await _setUserToken();
+      if (!noToken!) {
+        await _setUserToken();
+      }
       final response = await http.post(Uri.parse(_urlBuilder(url)),
           headers: headers == null
               ? MainFetcher.userToken != "noToken"
@@ -123,12 +134,17 @@ class MainFetcher {
     return responseJson;
   }*/
 
-  Future<dynamic> patch(String url,
-      {Map<String, String>? headers, Map<String, dynamic>? body}) async {
+  Future<dynamic> patch(
+      {required String url,
+      Map<String, String>? headers,
+      Map<String, dynamic>? body,
+      bool? noToken = false}) async {
     var responseJson;
     try {
       print(_urlBuilder(url));
-      await _setUserToken();
+      if (!noToken!) {
+        await _setUserToken();
+      }
       final response = await http.patch(Uri.parse(_urlBuilder(url)),
           headers: headers == null
               ? {

@@ -23,8 +23,9 @@ class AuthenticationService {
 
   Future<AppUser?> signInWithEmailAndPassword(
       String email, String password) async {
-    AppUser? appUser =
-        await AuthFetcher().whoAmI(email: email, password: password);
+    AppUser? appUser = await AuthFetcher()
+        .whoAmI(email: email, password: password, noToken: true);
+    print("token: ${appUser.jwt}");
     await SharedPreferencesUser().setToken(appUser.jwt);
     return appUser;
   }
