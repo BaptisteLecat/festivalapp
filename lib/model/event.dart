@@ -26,6 +26,9 @@ class Event {
     required this.name,
     required this.endDate,
     required this.musicgenders,
+    required this.description,
+    required this.latitude,
+    required this.longitude,
   });
 
   int id;
@@ -35,6 +38,9 @@ class Event {
   String name;
   DateTime endDate;
   List<MusicGender>? musicgenders;
+  String description;
+  double? latitude;
+  double? longitude;
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
         id: json["id"],
@@ -49,6 +55,10 @@ class Event {
             ? null
             : List<MusicGender>.from(
                 json["musicgenders"].map((x) => MusicGender.fromJson(x))),
+        description: json["description"],
+        latitude: json["latitude"] == null ? null : json["latitude"].toDouble(),
+        longitude:
+            json["longitude"] == null ? null : json["longitude"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,6 +71,9 @@ class Event {
         "musicgenders": musicgenders == null
             ? null
             : List<dynamic>.from(musicgenders!.map((x) => x.toJson())),
+        "description": description,
+        "latitude": latitude == null ? null : latitude,
+        "longitude": longitude == null ? null : longitude,
       };
 
   String _getMonth(int index) {

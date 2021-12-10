@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/model/event.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,8 +15,7 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
-  final CameraPosition _initialCameraPosition =
-      CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);
+  late CameraPosition _initialCameraPosition;
   Completer<GoogleMapController> _controller = Completer();
 
   late String _darkMapStyle;
@@ -24,6 +24,11 @@ class _EventPageState extends State<EventPage> {
   void initState() {
     super.initState();
     _loadMapStyles();
+    if (widget.event.latitude != null && widget.event.longitude != null) {
+      _initialCameraPosition = CameraPosition(
+          target: LatLng(widget.event.latitude!, widget.event.longitude!),
+          zoom: 11.5);
+    }
   }
 
   Future _loadMapStyles() async {
@@ -105,13 +110,82 @@ class _EventPageState extends State<EventPage> {
                 )),
             Expanded(
                 flex: 5,
-                child: Container(
-                  child: GoogleMap(
-                    myLocationButtonEnabled: false,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                    },
-                    initialCameraPosition: _initialCameraPosition,
+                child: SizedBox(
+                  child: Column(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: SizedBox(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Description",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .copyWith(color: Colors.white)),
+                                Text(
+                                    "Une superbe description incroyablement stylé, c'est dingue serieusement! Vive flutter, c'est trop génial.",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(18),
+                            child: (widget.event.latitude != null &&
+                                    widget.event.longitude != null)
+                                ? GoogleMap(
+                                    myLocationButtonEnabled: false,
+                                    onMapCreated:
+                                        (GoogleMapController controller) {
+                                      _controller.complete(controller);
+                                    },
+                                    initialCameraPosition:
+                                        _initialCameraPosition,
+                                  )
+                                : Center(
+                                    child:
+                                        Text("Pas de de données de position."),
+                                  ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                          flex: 1,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                  style: ButtonStyle(
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.symmetric(
+                                              horizontal: 36, vertical: 6)),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              primaryColor),
+                                      shape: MaterialStateProperty.all<
+                                              RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(28),
+                                      ))),
+                                  onPressed: () {},
+                                  child: Text("Acheter un ticket 272€",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4))
+                            ],
+                          ))
+                    ],
                   ),
                 ))
           ],
