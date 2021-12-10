@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:festivalapp/model/event.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class EventPage extends StatefulWidget {
   final Event event;
@@ -10,6 +14,25 @@ class EventPage extends StatefulWidget {
 }
 
 class _EventPageState extends State<EventPage> {
+  final CameraPosition _initialCameraPosition =
+      CameraPosition(target: LatLng(37.773972, -122.431297), zoom: 11.5);
+  Completer<GoogleMapController> _controller = Completer();
+
+  late String _darkMapStyle;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMapStyles();
+  }
+
+  Future _loadMapStyles() async {
+    _darkMapStyle = await rootBundle.loadString('assets/map_style.json');
+    await _controller.future.then((value) {
+      value.setMapStyle(_darkMapStyle);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -80,7 +103,17 @@ class _EventPageState extends State<EventPage> {
                     ],
                   ),
                 )),
-            Expanded(flex: 5, child: Container(color: Colors.blue))
+            Expanded(
+                flex: 5,
+                child: Container(
+                  child: GoogleMap(
+                    myLocationButtonEnabled: false,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller.complete(controller);
+                    },
+                    initialCameraPosition: _initialCameraPosition,
+                  ),
+                ))
           ],
         ),
       ),
