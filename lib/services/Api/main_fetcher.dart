@@ -12,7 +12,7 @@ import 'package:async/async.dart';
 
 class MainFetcher {
   static String userToken = "noToken";
-  String apiUrl = "https://10.0.3.87:8000/api";
+  String apiUrl = "https://192.168.1.42:8000/api";
 
   String _urlBuilder(String subUrl) {
     return "${this.apiUrl}/$subUrl";
@@ -64,24 +64,12 @@ class MainFetcher {
     var responseJson;
     try {
       print(_urlBuilder(url));
-      print(headers == null
-          ? MainFetcher.userToken != "noToken"
-              ? {
-                  "Accept": "application/json",
-                  "Content-Type": "application/x-www-form-urlencoded",
-                  "Authorization": "Bearer ${MainFetcher.userToken}"
-                }
-              : {
-                  "Accept": "application/json",
-                  "Content-Type": "application/x-www-form-urlencoded",
-                }
-          : headers);
       if (!noToken!) {
         await _setUserToken();
       }
       final response = await http.post(Uri.parse(_urlBuilder(url)),
           headers: headers == null
-              ? MainFetcher.userToken != "noToken"
+              ? MainFetcher.userToken != "noToken" && !noToken
                   ? {
                       "Accept": "application/json",
                       "Content-Type": "application/x-www-form-urlencoded",

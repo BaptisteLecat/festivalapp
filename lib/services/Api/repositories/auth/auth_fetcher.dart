@@ -18,7 +18,11 @@ class AuthFetcher extends MainFetcher {
   }
 
   Future<bool> register(
-      String name, String firstName, String email, String password) async {
+      {required String name,
+      required String firstName,
+      required String email,
+      required String password,
+      bool? noToken = false}) async {
     bool registered = false;
     final response = await post(
         url: "auth/register",
@@ -28,7 +32,7 @@ class AuthFetcher extends MainFetcher {
           "email": email,
           "password": password
         },
-        noToken: true);
+        noToken: noToken);
     print(response);
     if (response != null) {
       registered = true;

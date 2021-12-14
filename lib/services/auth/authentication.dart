@@ -32,6 +32,11 @@ class AuthenticationService {
 
   Future registerInWithEmailAndPassword(
       String name, String firstname, String email, String password) async {
-    return await AuthFetcher().register(name, firstname, email, password);
+    return await AuthFetcher().register(
+        name: name,
+        firstName: firstname,
+        email: email,
+        password: password,
+        noToken: true);
   }
 }
