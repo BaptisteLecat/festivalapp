@@ -1,4 +1,5 @@
 import 'package:festivalapp/common/error/app_exception.dart';
+import 'package:festivalapp/views/root_page.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/model/app_user.dart';
 import 'package:festivalapp/common/widgets/loading.dart';
@@ -119,7 +120,7 @@ class _BodyState extends State<Body> {
                       .then((appUser) {
                     if (appUser != null) {
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                          MaterialPageRoute(builder: (context) => RootPage()));
                     }
                   }).onError((AppException error, stackTrace) {
                     setState(() {
