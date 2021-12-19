@@ -93,7 +93,9 @@ class _RootPageState extends State<RootPage> {
             child: Padding(
                 padding: const EdgeInsets.all(14),
                 child: Image.asset("assets/icons/menu/ticket.png")),
-            onPressed: () {},
+            onPressed: () {
+              _selectedTab(1);
+            },
           ),
         ),
         body: SafeArea(child: displayedPage));
