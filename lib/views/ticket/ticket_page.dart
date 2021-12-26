@@ -24,12 +24,14 @@ class _TicketPageState extends State<TicketPage> {
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Flexible(
+                        flex: 2,
                         child: SizedBox(
                             child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
                               "TomorrowLand",
@@ -41,32 +43,131 @@ class _TicketPageState extends State<TicketPage> {
                             Text("Montrez ce ticket à l'entrée",
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline3!
+                                    .headline5!
                                     .copyWith(
                                         color: secondaryColorLessOpacity)),
-                            Divider()
+                            Divider(
+                              thickness: 2,
+                            )
                           ],
                         )),
                       ),
                       Expanded(
+                          flex: 6,
                           child: Flex(direction: Axis.vertical, children: [
-                        SizedBox(
-                            child: Column(
-                          children: [
-                            Text("Lieu",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .copyWith(
-                                        color: secondaryColorLessOpacity)),
-                            Text("New York, Madison Square Garden",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .copyWith(color: secondaryColor))
-                          ],
-                        )),
-                      ]))
+                            SizedBox(
+                                child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Lieu",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5!
+                                        .copyWith(
+                                            color: secondaryColorLessOpacity)),
+                                Text("New York, Madison Square Garden",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline5!
+                                        .copyWith(color: secondaryColor))
+                              ],
+                            )),
+                            SizedBox(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Date",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(
+                                                  color:
+                                                      secondaryColorLessOpacity)),
+                                      Text("10-03-2022",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(color: secondaryColor))
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Place",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(
+                                                  color:
+                                                      secondaryColorLessOpacity)),
+                                      Text("101",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(color: secondaryColor))
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )),
+                            SizedBox(
+                                child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Prix",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(
+                                                  color:
+                                                      secondaryColorLessOpacity)),
+                                      Text("346€",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(color: secondaryColor))
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("Commande",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(
+                                                  color:
+                                                      secondaryColorLessOpacity)),
+                                      Text("234656",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5!
+                                              .copyWith(color: secondaryColor))
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ))
+                          ])),
+                      Divider(
+                        thickness: 2,
+                      )
                     ],
                   ),
                 ));
