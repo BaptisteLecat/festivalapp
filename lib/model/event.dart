@@ -29,6 +29,7 @@ class Event {
     required this.description,
     required this.latitude,
     required this.longitude,
+    required this.price,
   });
 
   int id;
@@ -41,6 +42,7 @@ class Event {
   String description;
   double? latitude;
   double? longitude;
+  double? price;
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
         id: json["id"],
@@ -59,6 +61,7 @@ class Event {
         latitude: json["latitude"] == null ? null : json["latitude"].toDouble(),
         longitude:
             json["longitude"] == null ? null : json["longitude"].toDouble(),
+        price: json["price"] == null ? null : json["price"].toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -74,6 +77,7 @@ class Event {
         "description": description,
         "latitude": latitude == null ? null : latitude,
         "longitude": longitude == null ? null : longitude,
+        "price": price == null ? null : price,
       };
 
   String _getMonth(int index) {
@@ -82,6 +86,10 @@ class Event {
 
   String getDateOfEvent() {
     return "${date.day} - ${endDate.day} ${_getMonth(endDate.month)}, ${endDate.year}";
+  }
+
+  String getDateOfEventTicket() {
+    return "${date.day} ${_getMonth(date.month)} ${date.year}";
   }
 
   Uint8List getPictureEncoded() {

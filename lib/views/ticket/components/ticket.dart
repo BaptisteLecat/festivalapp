@@ -94,14 +94,14 @@ class _TicketState extends State<Ticket> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Date",
+                                    Text("Nom",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
                                             .copyWith(
                                                 color:
                                                     secondaryColorLessOpacity)),
-                                    Text(widget.barcode.event.getDateOfEvent(),
+                                    Text(widget.barcode.lastname,
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
@@ -113,14 +113,14 @@ class _TicketState extends State<Ticket> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Place",
+                                    Text("Prénom",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
                                             .copyWith(
                                                 color:
                                                     secondaryColorLessOpacity)),
-                                    Text("101",
+                                    Text(widget.barcode.firstname,
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
@@ -138,14 +138,16 @@ class _TicketState extends State<Ticket> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Prix",
+                                    Text("Date",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
                                             .copyWith(
                                                 color:
                                                     secondaryColorLessOpacity)),
-                                    Text("346€",
+                                    Text(
+                                        widget.barcode.event
+                                            .getDateOfEventTicket(),
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
@@ -157,14 +159,14 @@ class _TicketState extends State<Ticket> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Commande",
+                                    Text("Prix",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
                                             .copyWith(
                                                 color:
                                                     secondaryColorLessOpacity)),
-                                    Text("234656",
+                                    Text("${widget.barcode.event.price}€",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline5!
