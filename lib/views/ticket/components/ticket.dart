@@ -1,11 +1,12 @@
 import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/widgets/layout/dotted_separator.dart';
-import 'package:festivalapp/model/barcode.dart';
+import 'package:festivalapp/model/barcode.dart' as brCode;
 import 'package:festivalapp/views/ticket/components/inner_rounded_border.dart';
 import 'package:flutter/material.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 
 class Ticket extends StatefulWidget {
-  final Barcode barcode;
+  final brCode.Barcode barcode;
   const Ticket({Key? key, required this.barcode}) : super(key: key);
 
   @override
@@ -196,8 +197,11 @@ class _TicketState extends State<Ticket> {
                 color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(18),
-                  child: Container(
-                    color: Colors.purple,
+                  child: BarcodeWidget(
+                    barcode: Barcode.ean13(),
+                    data: "${widget.barcode.code}",
+                    errorBuilder: (context, error) =>
+                        Center(child: Text(error)),
                   ),
                 ),
               ),
