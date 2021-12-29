@@ -46,6 +46,7 @@ dependencies:
   carousel_slider: ^4.0.0
   google_maps_flutter: ^2.1.1
   flutter_swiper_tv: ^1.1.6-nullsafety
+  barcode_widget: ^2.0.2
 
 dev_dependencies:
   flutter_test:

@@ -5,7 +5,7 @@ import 'package:festivalapp/services/api/main_fetcher.dart';
 class MusicGenderFetcher extends MainFetcher {
   Future<List<MusicGender>> getMusicGenderList() async {
     final response = await get(url: "music_genders");
-    print(response);
-    return listMusicgenderFromJson(response);
+    print(response.content);
+    return listMusicgenderFromJson(response.content);
   }
 }

@@ -14,7 +14,7 @@ class AuthFetcher extends MainFetcher {
             : {"token": token},
         noToken: noToken);
     print(response);
-    return AppUser.fromJson(response);
+    return AppUser.fromJson(response.content);
   }
 
   Future<bool> register(
@@ -34,7 +34,7 @@ class AuthFetcher extends MainFetcher {
         },
         noToken: noToken);
     print(response);
-    if (response != null) {
+    if (response.content != null) {
       registered = true;
     }
     return registered;

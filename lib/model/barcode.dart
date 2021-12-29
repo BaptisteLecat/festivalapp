@@ -15,9 +15,8 @@ String barcodeToJson(Barcode data) => json.encode(data.toJson());
 
 class Barcode {
   Barcode({
+    required this.iri,
     required this.id,
-    required this.type,
-    required this.barcodeId,
     required this.code,
     required this.event,
     required this.user,
@@ -26,10 +25,9 @@ class Barcode {
     required this.firstname,
   });
 
-  String id;
-  String type;
-  int barcodeId;
-  int code;
+  String? iri;
+  int id;
+  String code;
   Event event;
   AppUser user;
   DateTime expirationDate;
@@ -37,9 +35,8 @@ class Barcode {
   String firstname;
 
   factory Barcode.fromJson(Map<String, dynamic> json) => Barcode(
-        id: json["@id"],
-        type: json["@type"],
-        barcodeId: json["id"],
+        iri: json["@id"],
+        id: json["id"],
         code: json["code"],
         event: Event.fromJson(json["event"]),
         user: AppUser.fromJson(json["user"]),
@@ -49,9 +46,8 @@ class Barcode {
       );
 
   Map<String, dynamic> toJson() => {
-        "@id": id,
-        "@type": type,
-        "id": barcodeId,
+        "@id": iri,
+        "id": id,
         "code": code,
         "event": event.toJson(),
         "user": user.toJson(),

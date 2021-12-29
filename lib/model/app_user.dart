@@ -22,15 +22,17 @@ class AppUser {
   String name;
   String firstname;
   String email;
-  List<String> roles;
-  String jwt;
+  List<String>? roles;
+  String? jwt;
 
   factory AppUser.fromJson(Map<String, dynamic> json) => AppUser(
         id: json["id"],
         name: json["name"],
         firstname: json["firstname"],
         email: json["email"],
-        roles: List<String>.from(json["roles"].map((x) => x)),
+        roles: (json["roles"] != null)
+            ? List<String>.from(json["roles"].map((x) => x))
+            : null,
         jwt: json["jwt"],
       );
 
@@ -39,7 +41,8 @@ class AppUser {
         "name": name,
         "firstname": firstname,
         "email": email,
-        "roles": List<dynamic>.from(roles.map((x) => x)),
+        "roles":
+            (roles != null) ? List<dynamic>.from(roles!.map((x) => x)) : null,
         "jwt": jwt,
       };
 }

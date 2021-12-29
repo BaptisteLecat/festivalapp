@@ -26,7 +26,7 @@ class AuthenticationService {
     AppUser? appUser = await AuthFetcher()
         .whoAmI(email: email, password: password, noToken: true);
     print("token: ${appUser.jwt}");
-    await SharedPreferencesUser().setToken(appUser.jwt);
+    await SharedPreferencesUser().setToken(appUser.jwt!);
     return appUser;
   }
 
