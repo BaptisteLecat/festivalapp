@@ -21,7 +21,7 @@ class _TicketPageState extends State<TicketPage> {
       child: FutureBuilder(
           future: BarcodeFetcher().getBarcodeList(),
           builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data != null) {
+            if (snapshot.hasData) {
               List<Barcode> listBarcode = snapshot.data as List<Barcode>;
               return Swiper(
                   itemCount: listBarcode.length,
