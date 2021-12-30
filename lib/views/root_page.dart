@@ -35,10 +35,10 @@ class _RootPageState extends State<RootPage> {
         );
         break;
       case 1:
-        page = TicketPage();
+        page = AccountPage();
         break;
       case 2:
-        page = AccountPage();
+        page = TicketPage();
         break;
       default:
         page = HomePage(
@@ -94,7 +94,7 @@ class _RootPageState extends State<RootPage> {
                 padding: const EdgeInsets.all(14),
                 child: Image.asset("assets/icons/menu/ticket.png")),
             onPressed: () {
-              _selectedTab(1);
+              _selectedTab(2);
             },
           ),
         ),
