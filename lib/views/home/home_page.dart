@@ -79,7 +79,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Expanded(flex: 4, child: Carousel())
+              Expanded(
+                  flex: 4,
+                  child: Carousel(
+                    musicGender: selectedMusicGender,
+                  ))
             ],
           ),
         ),

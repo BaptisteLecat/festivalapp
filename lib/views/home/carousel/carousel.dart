@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 import 'package:festivalapp/model/event.dart';
+import 'package:festivalapp/model/music_gender.dart';
 import 'package:festivalapp/services/api/repositories/event/event_fetcher.dart';
 import 'package:festivalapp/views/event/event_page.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class Carousel extends StatefulWidget {
-  const Carousel({Key? key}) : super(key: key);
+  final MusicGender? musicGender;
+  const Carousel({Key? key, this.musicGender}) : super(key: key);
 
   @override
   _CarouselState createState() => _CarouselState();
@@ -17,7 +19,9 @@ class _CarouselState extends State<Carousel> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: EventFetcher().getEventList(),
+        future: EventFetcher().getEventList(
+            label:
+                (widget.musicGender != null) ? widget.musicGender!.label : ""),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const SizedBox(
