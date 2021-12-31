@@ -45,4 +45,17 @@ class AppUser {
             (roles != null) ? List<dynamic>.from(roles!.map((x) => x)) : null,
         "jwt": jwt,
       };
+
+  bool isAdmin() {
+    bool isAdmin = false;
+    if (roles != null) {
+      for (String role in roles!) {
+        if (role == "ROLE_ADMIN") {
+          isAdmin = true;
+          break;
+        }
+      }
+    }
+    return isAdmin;
+  }
 }

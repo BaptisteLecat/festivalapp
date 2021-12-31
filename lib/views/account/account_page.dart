@@ -1,3 +1,4 @@
+import 'package:festivalapp/model/app_user.dart';
 import 'package:festivalapp/services/Api/repositories/auth/auth_fetcher.dart';
 import 'package:festivalapp/views/account/components/admin_button.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,14 @@ class _AccountPageState extends State<AccountPage> {
       future: AuthFetcher().whoAmI(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          AppUser user = snapshot.data as AppUser;
           return Container(
             child: Column(
-              children: const [Flexible(child: AdminButton())],
+              children: [
+                Visibility(
+                    visible: user.isAdmin(),
+                    child: Flexible(child: AdminButton()))
+              ],
             ),
           );
         } else if (snapshot.connectionState == ConnectionState.waiting) {
