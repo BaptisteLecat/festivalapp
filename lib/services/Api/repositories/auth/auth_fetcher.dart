@@ -2,7 +2,13 @@ import 'package:festivalapp/model/app_user.dart';
 import 'package:festivalapp/services/api/main_fetcher.dart';
 
 class AuthFetcher extends MainFetcher {
-  Future<AppUser> whoAmI(
+  Future<AppUser> whoAmI() async {
+    final response = await get(url: "account/whoami");
+    print(response.content);
+    return AppUser.fromJson(response.content);
+  }
+
+  Future<AppUser> login(
       {String? email,
       String? password,
       String? token,
