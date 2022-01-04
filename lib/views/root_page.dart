@@ -21,7 +21,7 @@ class _RootPageState extends State<RootPage> {
   void _selectedTab(int index) {
     setState(() {
       _lastSelected = index;
-      displayedPage = _getDisplayedPage();
+      //displayedPage = _getDisplayedPage();
       print(displayedPage);
     });
   }
@@ -63,41 +63,52 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: FABBottomAppBar(
-          backgroundColor: secondaryColor,
-          color: Colors.white,
-          selectedColor: primaryColor,
-          notchedShape: CircularNotchedRectangle(),
-          onTabSelected: _selectedTab,
-          items: [
-            FABBottomAppBarItem(
-                iconData: const AssetImage("assets/icons/menu/home.png"),
-                selectedIconData:
-                    const AssetImage("assets/icons/menu/home_selected.png"),
-                text: 'Home'),
-            FABBottomAppBarItem(
-                iconData: const AssetImage("assets/icons/menu/user.png"),
-                selectedIconData:
-                    const AssetImage("assets/icons/menu/user_selected.png"),
-                text: 'Account'),
-          ],
+      bottomNavigationBar: FABBottomAppBar(
+        backgroundColor: secondaryColor,
+        color: Colors.white,
+        selectedColor: primaryColor,
+        notchedShape: CircularNotchedRectangle(),
+        onTabSelected: _selectedTab,
+        items: [
+          FABBottomAppBarItem(
+              iconData: const AssetImage("assets/icons/menu/home.png"),
+              selectedIconData:
+                  const AssetImage("assets/icons/menu/home_selected.png"),
+              text: 'Home'),
+          FABBottomAppBarItem(
+              iconData: const AssetImage("assets/icons/menu/user.png"),
+              selectedIconData:
+                  const AssetImage("assets/icons/menu/user_selected.png"),
+              text: 'Account'),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: SizedBox(
+        width: 64.0,
+        height: 64.0,
+        child: FloatingActionButton(
+          backgroundColor: primaryColor,
+          shape: const CircleBorder(),
+          elevation: 0.0,
+          child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Image.asset("assets/icons/menu/ticket.png")),
+          onPressed: () {
+            _selectedTab(2);
+          },
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: SizedBox(
-          width: 64.0,
-          height: 64.0,
-          child: FloatingActionButton(
-            backgroundColor: primaryColor,
-            shape: const CircleBorder(),
-            elevation: 0.0,
-            child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Image.asset("assets/icons/menu/ticket.png")),
-            onPressed: () {
-              _selectedTab(2);
-            },
+      ),
+      body: IndexedStack(
+        index: _lastSelected,
+        children: [
+          HomePage(
+            fromAuth: widget.fromAuth,
           ),
-        ),
-        body: SafeArea(child: displayedPage));
+          AccountPage(),
+          TicketPage(),
+          HomePage()
+        ],
+      ),
+    );
   }
 }
