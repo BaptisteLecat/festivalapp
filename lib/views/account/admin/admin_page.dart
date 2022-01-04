@@ -1,4 +1,5 @@
 import 'package:festivalapp/common/constants/colors.dart';
+import 'package:festivalapp/views/account/admin/event/admin_event_page.dart';
 import 'package:flutter/material.dart';
 
 class AdminPage extends StatefulWidget {
@@ -13,10 +14,7 @@ class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     const List<Widget> _pages = <Widget>[
-      Icon(
-        Icons.call,
-        size: 150,
-      ),
+      AdminEventPage(),
       Icon(
         Icons.camera,
         size: 150,
