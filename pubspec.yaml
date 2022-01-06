@@ -47,6 +47,10 @@ dependencies:
   google_maps_flutter: ^2.1.1
   flutter_swiper_tv: ^1.1.6-nullsafety
   barcode_widget: ^2.0.2
+  datetime_picker_formfield: ^2.0.0
+  intl: ^0.17.0
+  image_picker: ^0.8.4+4
+  awesome_select: ^5.1.0
 
 dev_dependencies:
   flutter_test:

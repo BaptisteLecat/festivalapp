@@ -100,7 +100,9 @@ class _AdminEventPageState extends State<AdminEventPage> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    AdminEditEvent()));
+                                                    AdminEditEvent(
+                                                      event: listEvents[index],
+                                                    )));
                                       },
                                     ),
                                   );

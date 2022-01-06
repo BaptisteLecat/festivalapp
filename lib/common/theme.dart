@@ -35,6 +35,11 @@ ThemeData basicTheme() {
           fontSize: 18,
           color: secondaryColorLessOpacity,
           fontWeight: FontWeight.w400),
+      subtitle1: TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 18,
+          color: Colors.white,
+          fontWeight: FontWeight.w400),
       bodyText1: TextStyle(
         fontFamily: 'Poppins',
         fontSize: 15.0,
@@ -61,6 +66,7 @@ ThemeData basicTheme() {
       appBarTheme: AppBarTheme(backgroundColor: primaryColor),
       textSelectionTheme: TextSelectionThemeData(
           cursorColor: primaryColor, selectionColor: primaryColor),
+      cardColor: secondaryColor,
       //primaryColor: Color(0xff4829b2),
       indicatorColor: Color(0xFF807A6B),
       scaffoldBackgroundColor: backgroundColor,
