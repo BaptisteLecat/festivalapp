@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:awesome_select/awesome_select.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:festivalapp/common/constants/colors.dart';
+import 'package:festivalapp/common/error/app_exception.dart';
 import 'package:festivalapp/common/widgets/inputs/inputDecoration/advanced_decoration.dart';
 import 'package:festivalapp/common/widgets/layout/icon_badge.dart';
 import 'package:festivalapp/model/artist.dart';
 import 'package:festivalapp/model/event.dart';
 import 'package:festivalapp/model/music_gender.dart';
 import 'package:festivalapp/services/Api/repositories/artist/artist_fetcher.dart';
+import 'package:festivalapp/services/Api/repositories/event/event_fetcher.dart';
 import 'package:festivalapp/services/Api/repositories/musicGender/musicgender_fetcher.dart';
 import 'package:festivalapp/views/account/admin/event/components/form_event.dart';
 import 'package:flutter/material.dart';
@@ -26,8 +28,8 @@ class AdminEditEvent extends StatefulWidget {
 
 class _AdminEditEventState extends State<AdminEditEvent> {
   bool changes = false;
-  List<S2Choice<int>>? selectedMusicGenders;
-  List<S2Choice<int>>? selectedArtists;
+  List<S2Choice<MusicGender>>? selectedMusicGenders;
+  List<S2Choice<Artist>>? selectedArtists;
   late Future<List<MusicGender>> _futureMusicGender;
   List<MusicGender> listMusicGenders = [];
   late Future<List<Artist>> _futureArtists;
@@ -40,10 +42,11 @@ class _AdminEditEventState extends State<AdminEditEvent> {
     super.initState();
   }
 
-  List<int> getSelectedMusicGenders() {
-    List<int> items = [];
+  List<MusicGender> getSelectedMusicGenders() {
+    List<MusicGender> items = [];
     if (selectedMusicGenders != null) {
       selectedMusicGenders!.forEach((element) {
+        print(element);
         items.add(element.value);
       });
     } else {
@@ -52,52 +55,77 @@ class _AdminEditEventState extends State<AdminEditEvent> {
     return items;
   }
 
-  List<int> hydrateMusicGenders() {
-    List<int> items = [];
+  List<MusicGender> hydrateMusicGenders() {
+    List<MusicGender> items = [];
     if (widget.event.musicgenders != null) {
-      widget.event.musicgenders!.asMap().forEach((index, element) {
-        items.add(index);
+      widget.event.musicgenders!.forEach((element) {
+        print(element.label);
+        items.add(element);
       });
     }
     return items;
   }
 
-  List<S2Choice<int>> getMusicGenders() {
-    List<S2Choice<int>> items = [];
+  List<S2Choice<MusicGender>> getMusicGenders() {
+    List<S2Choice<MusicGender>> items = [];
     listMusicGenders.forEach((element) {
-      items.add(S2Choice<int>(value: element.id!, title: element.label));
+      items.add(S2Choice<MusicGender>(value: element, title: element.label));
     });
     return items;
   }
 
-  List<int> getSelectedArtists() {
-    List<int> items = [];
+  List<Artist> getSelectedArtists() {
+    List<Artist> items = [];
     if (selectedArtists != null) {
       selectedArtists!.forEach((element) {
         items.add(element.value);
       });
     } else {
-      items = hydrateMusicGenders();
+      items = hydrateArtists();
     }
     return items;
   }
 
-  List<int> hydrateArtists() {
-    List<int> items = [];
-    if (widget.event.musicgenders != null) {
-      widget.event.musicgenders!.asMap().forEach((index, element) {
-        items.add(index);
+  List<Artist> hydrateArtists() {
+    List<Artist> items = [];
+    if (widget.event.artists != null) {
+      widget.event.artists!.forEach((element) {
+        items.add(element);
       });
     }
     return items;
   }
 
-  List<S2Choice<int>> getArtists() {
-    List<S2Choice<int>> items = [];
+  List<S2Choice<Artist>> getArtists() {
+    List<S2Choice<Artist>> items = [];
     listArtists.forEach((element) {
-      items.add(S2Choice<int>(value: element.id, title: element.name));
+      items.add(S2Choice<Artist>(value: element, title: element.name));
     });
     return items;
+  }
+
+  void _updateChangesValue(bool changes) {
+    setState(() {
+      this.changes = changes;
+    });
+  }
+
+  void _updateEventValue(Event event) {
+    setState(() {
+      widget.event = event;
+    });
+  }
+
+  Future<void> _saveEventUpdate() async {
+    await EventFetcher().putEvent(event: widget.event).then((Event event) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: successMessageColor,
+          content: Text('Modification enregistrées')));
+    }).onError((AppException error, stackTrace) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: errorMessageColor,
+          content: Text("${error.message}")));
+    });
   }
 
   @override
@@ -111,9 +139,8 @@ class _AdminEditEventState extends State<AdminEditEvent> {
             child: IconButton(
               icon: const Icon(Icons.done),
               tooltip: 'Enregistrer',
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Modification enregistrées')));
+              onPressed: () async {
+                await _saveEventUpdate();
               },
             ),
           ),
@@ -131,8 +158,9 @@ class _AdminEditEventState extends State<AdminEditEvent> {
                     listMusicGenders = snapshot.data as List<MusicGender>;
                     return SizedBox(
                       child: FormEvent(
-                        changes: changes,
-                        event: widget.event,
+                        event: widget.event.copy(),
+                        eventFunction: _updateEventValue,
+                        changesFunction: _updateChangesValue,
                         selectedMusicGenders: selectedMusicGenders,
                         selectedIndexedMusicGenders: getSelectedMusicGenders(),
                         choiceMusicGenders: getMusicGenders(),

@@ -59,7 +59,7 @@ class MainFetcher {
           headers: headers == null
               ? {
                   "Content-Type": "application/ld+json",
-                  "Accept": "application/json",
+                  "Accept": "application/ld+json",
                   "Authorization": "Bearer ${MainFetcher.userToken}"
                 }
               : headers);
@@ -136,6 +136,35 @@ class MainFetcher {
     }
     return responseJson;
   }*/
+
+  Future<dynamic> put(
+      {required String url,
+      Map<String, String>? headers,
+      Map<String, dynamic>? body,
+      bool? noToken = false,
+      bool? toJsonLd}) async {
+    var responseJson;
+    try {
+      print(_urlBuilder(url));
+      if (!noToken!) {
+        await _setUserToken();
+      }
+      final response = await http.put(Uri.parse(_urlBuilder(url)),
+          headers: headers == null
+              ? {
+                  "Accept": "application/ld+json",
+                  "Content-Type": "application/json",
+                  "Authorization": "Bearer ${MainFetcher.userToken}"
+                }
+              : headers,
+          body: jsonEncode(body),
+          encoding: Utf8Codec());
+      responseJson = _returnResponse(response: response, toJsonLd: toJsonLd);
+    } on SocketException {
+      throw FetchDataException(message: 'No Internet connection');
+    }
+    return responseJson;
+  }
 
   Future<dynamic> patch(
       {required String url,

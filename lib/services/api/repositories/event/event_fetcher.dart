@@ -10,4 +10,11 @@ class EventFetcher extends MainFetcher {
     print(response.content);
     return listEventFromJson(response.content);
   }
+
+  Future<Event> putEvent({required Event event}) async {
+    print(event.name);
+    final response = await put(url: "events/${event.id}", body: event.toJson());
+    print(response.content);
+    return Event.fromJson(response.content);
+  }
 }

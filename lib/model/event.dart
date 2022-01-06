@@ -19,6 +19,7 @@ String eventToJson(Event data) => json.encode(data.toJson());
 
 class Event {
   Event({
+    required this.iri,
     required this.id,
     required this.artists,
     required this.date,
@@ -32,6 +33,7 @@ class Event {
     required this.price,
   });
 
+  String iri;
   int id;
   List<Artist>? artists;
   DateTime date;
@@ -45,6 +47,7 @@ class Event {
   double? price;
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
+        iri: json["@id"],
         id: json["id"],
         artists: json["artists"] == null
             ? null
@@ -66,19 +69,34 @@ class Event {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "artists": List<dynamic>.from(artists!.map((x) => x.toJson())),
+        "artists": List<dynamic>.from(artists!.map((x) => x.iri)),
         "date": date.toIso8601String(),
         "name": name,
         "picture": (picture != null) ? picture : null,
         "endDate": endDate.toIso8601String(),
         "musicgenders": musicgenders == null
             ? null
-            : List<dynamic>.from(musicgenders!.map((x) => x.toJson())),
+            : List<dynamic>.from(musicgenders!.map((x) => x.iri)),
         "description": description,
         "latitude": latitude == null ? null : latitude,
         "longitude": longitude == null ? null : longitude,
         "price": price == null ? null : price,
       };
+
+  Event copy() => Event(
+        iri: iri,
+        id: id,
+        artists: artists,
+        date: date,
+        name: name,
+        picture: picture,
+        endDate: endDate,
+        musicgenders: musicgenders,
+        description: description,
+        latitude: latitude,
+        longitude: longitude,
+        price: price,
+      );
 
   String _getMonth(int index) {
     return const_monthLabel[index - 1];

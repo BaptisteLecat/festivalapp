@@ -49,7 +49,7 @@ class Barcode {
         "@id": iri,
         "id": id,
         "code": code,
-        "event": event.toJson(),
+        "event": event.iri,
         "user": user.toJson(),
         "expirationDate": expirationDate.toIso8601String(),
         "lastname": lastname,

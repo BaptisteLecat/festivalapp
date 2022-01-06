@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:awesome_select/awesome_select.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/widgets/inputs/inputDecoration/advanced_decoration.dart';
+import 'package:festivalapp/model/artist.dart';
 import 'package:festivalapp/model/event.dart';
+import 'package:festivalapp/model/music_gender.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,16 +16,18 @@ import 'package:intl/intl.dart';
 
 class FormEvent extends StatefulWidget {
   final Event event;
-  bool changes;
-  List<S2Choice<int>>? selectedMusicGenders;
-  List<int> selectedIndexedMusicGenders;
-  List<S2Choice<int>> choiceMusicGenders;
-  List<S2Choice<int>>? selectedArtists;
-  List<int> selectedIndexedArtists;
-  List<S2Choice<int>> choiceArtists;
+  final ValueChanged<Event> eventFunction;
+  final ValueChanged<bool> changesFunction;
+  List<S2Choice<MusicGender>>? selectedMusicGenders;
+  List<MusicGender> selectedIndexedMusicGenders;
+  List<S2Choice<MusicGender>> choiceMusicGenders;
+  List<S2Choice<Artist>>? selectedArtists;
+  List<Artist> selectedIndexedArtists;
+  List<S2Choice<Artist>> choiceArtists;
   FormEvent({
     required this.event,
-    required this.changes,
+    required this.eventFunction,
+    required this.changesFunction,
     required this.selectedMusicGenders,
     required this.selectedIndexedMusicGenders,
     required this.choiceMusicGenders,
@@ -72,10 +78,14 @@ class _FormEventState extends State<FormEvent> {
 
   Future<void> pickImage() async {
     ImagePicker _picker = ImagePicker();
-    await _picker.pickImage(source: ImageSource.gallery).then((xFile) {
+    await _picker.pickImage(source: ImageSource.gallery).then((xFile) async {
       if (xFile != null) {
-        setState(() {
-          picture = xFile;
+        picture = xFile;
+        await picture!.readAsBytes().then((bytes) {
+          setState(() {
+            widget.event.picture = base64Encode(bytes);
+            widget.eventFunction(widget.event);
+          });
         });
       }
     });
@@ -83,6 +93,7 @@ class _FormEventState extends State<FormEvent> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.selectedIndexedMusicGenders.length);
     return Form(
         key: _formKey,
         child: Padding(
@@ -122,12 +133,12 @@ class _FormEventState extends State<FormEvent> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                onEditingComplete: () {
-                                  if (nameController.text !=
-                                      widget.event.name) {
+                                onChanged: (String value) {
+                                  if (value != widget.event.name) {
                                     widget.event.name = nameController.text;
                                     setState(() {
-                                      widget.changes = true;
+                                      widget.changesFunction(true);
+                                      widget.eventFunction(widget.event);
                                     });
                                   }
                                 },
@@ -166,13 +177,13 @@ class _FormEventState extends State<FormEvent> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                onEditingComplete: () {
-                                  if (descriptionController.text !=
-                                      widget.event.description) {
+                                onChanged: (String value) {
+                                  if (value != widget.event.description) {
                                     widget.event.description =
                                         descriptionController.text;
                                     setState(() {
-                                      widget.changes = true;
+                                      widget.changesFunction(true);
+                                      widget.eventFunction(widget.event);
                                     });
                                   }
                                 },
@@ -214,14 +225,14 @@ class _FormEventState extends State<FormEvent> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                onEditingComplete: () {
-                                  if (double.parse(
-                                          latitudeController.value.text) !=
-                                      widget.event.latitude) {
-                                    widget.event.latitude = double.parse(
-                                        latitudeController.value.text);
+                                onChanged: (String value) {
+                                  if (value !=
+                                      widget.event.latitude.toString()) {
+                                    widget.event.latitude =
+                                        double.parse(latitudeController.text);
                                     setState(() {
-                                      widget.changes = true;
+                                      widget.changesFunction(true);
+                                      widget.eventFunction(widget.event);
                                     });
                                   }
                                 },
@@ -263,14 +274,14 @@ class _FormEventState extends State<FormEvent> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                onEditingComplete: () {
-                                  if (double.parse(
-                                          longitudeController.value.text) !=
-                                      widget.event.longitude) {
-                                    widget.event.longitude = double.parse(
-                                        longitudeController.value.text);
+                                onChanged: (String value) {
+                                  if (value !=
+                                      widget.event.longitude.toString()) {
+                                    widget.event.longitude =
+                                        double.parse(longitudeController.text);
                                     setState(() {
-                                      widget.changes = true;
+                                      widget.changesFunction(true);
+                                      widget.eventFunction(widget.event);
                                     });
                                   }
                                 },
@@ -312,14 +323,13 @@ class _FormEventState extends State<FormEvent> {
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
                                 ),
-                                onEditingComplete: () {
-                                  if (double.parse(
-                                          priceController.value.text) !=
-                                      widget.event.price) {
-                                    widget.event.price = double.parse(
-                                        priceController.value.text);
+                                onChanged: (String value) {
+                                  if (value != widget.event.price.toString()) {
+                                    widget.event.price =
+                                        double.parse(priceController.text);
                                     setState(() {
-                                      widget.changes = true;
+                                      widget.changesFunction(true);
+                                      widget.eventFunction(widget.event);
                                     });
                                   }
                                 },
@@ -376,7 +386,8 @@ class _FormEventState extends State<FormEvent> {
                                   if (combinedDate != widget.event.date) {
                                     widget.event.date = combinedDate;
                                     setState(() {
-                                      widget.changes = true;
+                                      widget.changesFunction(true);
+                                      widget.eventFunction(widget.event);
                                     });
                                   }
                                   return combinedDate;
@@ -434,7 +445,8 @@ class _FormEventState extends State<FormEvent> {
                                   if (combinedDate != widget.event.endDate) {
                                     widget.event.endDate = combinedDate;
                                     setState(() {
-                                      widget.changes = true;
+                                      widget.changesFunction(true);
+                                      widget.eventFunction(widget.event);
                                     });
                                   }
                                   return combinedDate;
@@ -452,16 +464,21 @@ class _FormEventState extends State<FormEvent> {
                             color: secondaryColor,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(16))),
-                        child: SmartSelect<int>.multiple(
+                        child: SmartSelect<MusicGender>.multiple(
                           title: 'Genre musicaux',
                           placeholder: 'Aucun choix',
                           selectedValue: widget.selectedIndexedMusicGenders,
                           choiceItems: widget.choiceMusicGenders,
                           onChange: (multiSelected) => setState(() {
-                            widget.changes = true;
+                            widget.changesFunction(true);
                             if (multiSelected != null) {
                               widget.selectedMusicGenders =
                                   multiSelected.choice;
+                              widget.event.musicgenders =
+                                  List<MusicGender>.from(widget
+                                      .selectedMusicGenders!
+                                      .map((x) => x.value));
+                              widget.eventFunction(widget.event);
                             }
                           }),
                           choiceType: S2ChoiceType.cards,
@@ -504,15 +521,18 @@ class _FormEventState extends State<FormEvent> {
                             color: secondaryColor,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(16))),
-                        child: SmartSelect<int>.multiple(
+                        child: SmartSelect<Artist>.multiple(
                           title: 'Artistes',
                           placeholder: 'Aucun choix',
                           selectedValue: widget.selectedIndexedArtists,
                           choiceItems: widget.choiceArtists,
                           onChange: (multiSelected) => setState(() {
-                            widget.changes = true;
+                            widget.changesFunction(true);
                             if (multiSelected != null) {
                               widget.selectedArtists = multiSelected.choice;
+                              widget.event.artists = List<Artist>.from(
+                                  widget.selectedArtists!.map((x) => x.value));
+                              widget.eventFunction(widget.event);
                             }
                           }),
                           choiceType: S2ChoiceType.cards,
@@ -576,7 +596,7 @@ class _FormEventState extends State<FormEvent> {
                                         ),
                                         onTap: () async {
                                           await pickImage();
-                                          widget.changes = true;
+                                          widget.changesFunction(true);
                                         },
                                       ),
                                     ),

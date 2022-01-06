@@ -12,18 +12,21 @@ String artistToJson(Artist data) => json.encode(data.toJson());
 
 class Artist {
   Artist({
+    required this.iri,
     required this.id,
     required this.name,
     required this.musicGenders,
     required this.picture,
   });
 
+  String iri;
   int id;
   String name;
   List<MusicGender>? musicGenders;
   dynamic picture;
 
   factory Artist.fromJson(Map<String, dynamic> json) => Artist(
+        iri: json["@id"],
         id: (json["id"] == null) ? null : json["id"],
         name: (json["name"] == null) ? null : json["name"],
         musicGenders: (json["musicGenders"] == null)
@@ -37,7 +40,7 @@ class Artist {
         "name": (name == null) ? null : name,
         "musicGenders": musicGenders == null
             ? null
-            : List<MusicGender>.from(musicGenders!.map((x) => x)),
+            : List<MusicGender>.from(musicGenders!.map((x) => x.iri)),
         "picture": picture,
       };
 

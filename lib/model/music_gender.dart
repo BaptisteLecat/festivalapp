@@ -10,14 +10,17 @@ String musicGenderToJson(MusicGender data) => json.encode(data.toJson());
 
 class MusicGender {
   MusicGender({
+    required this.iri,
     required this.id,
     required this.label,
   });
 
+  String iri;
   int? id;
   String label;
 
   factory MusicGender.fromJson(Map<String, dynamic> json) => MusicGender(
+        iri: json["@id"],
         id: (json["id"] == null) ? null : json["id"],
         label: (json["label"] == null) ? null : json["label"],
       );

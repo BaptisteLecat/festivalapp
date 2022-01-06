@@ -58,7 +58,8 @@ class _TagFilterState extends State<TagFilter> {
               } else {
                 listTags = snapshot.data as List<MusicGender>;
                 if (this.startInit) {
-                  listTags.insert(0, MusicGender(id: null, label: "Tout"));
+                  listTags.insert(
+                      0, MusicGender(iri: "", id: null, label: "Tout"));
                   this.startInit = false;
                 }
                 return ListView.builder(
