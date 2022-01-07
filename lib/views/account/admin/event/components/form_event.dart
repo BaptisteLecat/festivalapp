@@ -18,21 +18,25 @@ class FormEvent extends StatefulWidget {
   final Event event;
   final ValueChanged<Event> eventFunction;
   final ValueChanged<bool> changesFunction;
-  List<S2Choice<MusicGender>>? selectedMusicGenders;
-  List<MusicGender> selectedIndexedMusicGenders;
-  List<S2Choice<MusicGender>> choiceMusicGenders;
-  List<S2Choice<Artist>>? selectedArtists;
-  List<Artist> selectedIndexedArtists;
-  List<S2Choice<Artist>> choiceArtists;
+  List<MusicGender> listMusicGenders;
+  List<Artist> listArtists;
+  List<S2Choice<int>> selectedMusicGendersWidgets;
+  List<int> selectedMusicGendersId;
+  List<S2Choice<int>> choiceMusicGenders;
+  List<S2Choice<int>> selectedArtistsWidgets;
+  List<int> selectedArtistsId;
+  List<S2Choice<int>> choiceArtists;
   FormEvent({
     required this.event,
     required this.eventFunction,
     required this.changesFunction,
-    required this.selectedMusicGenders,
-    required this.selectedIndexedMusicGenders,
+    required this.listMusicGenders,
+    required this.listArtists,
+    required this.selectedMusicGendersWidgets,
+    required this.selectedMusicGendersId,
     required this.choiceMusicGenders,
-    required this.selectedArtists,
-    required this.selectedIndexedArtists,
+    required this.selectedArtistsWidgets,
+    required this.selectedArtistsId,
     required this.choiceArtists,
     Key? key,
   }) : super(key: key);
@@ -91,9 +95,49 @@ class _FormEventState extends State<FormEvent> {
     });
   }
 
+  void _updateEventMusicGenders() {
+    bool added = false;
+    List<MusicGender> tempMusicGenders = [];
+    widget.selectedMusicGendersWidgets.forEach((musicGenderWidget) {
+      widget.listMusicGenders.forEach((musicGender) {
+        if (musicGenderWidget.value == musicGender.id) {
+          added = true;
+          tempMusicGenders.add(musicGender);
+        }
+      });
+    });
+    if (added || tempMusicGenders.isEmpty) {
+      widget.event.musicgenders = tempMusicGenders;
+      widget.changesFunction(true);
+      widget.eventFunction(widget.event);
+    }
+    print(widget.event.musicgenders.length);
+  }
+
+  void _updateEventArtists() {
+    bool added = false;
+    List<Artist> tempArtists = [];
+    print(widget.selectedArtistsWidgets.length);
+    widget.selectedArtistsWidgets.forEach((artistWidget) {
+      widget.listArtists.forEach((artist) {
+        if (artistWidget.value == artist.id) {
+          added = true;
+          print(artist.name);
+          tempArtists.add(artist);
+        }
+      });
+    });
+    if (added || tempArtists.isEmpty) {
+      widget.event.artists = tempArtists;
+      widget.changesFunction(true);
+      widget.eventFunction(widget.event);
+    }
+    print(tempArtists.length);
+    print(widget.event.artists.length);
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.selectedIndexedMusicGenders.length);
     return Form(
         key: _formKey,
         child: Padding(
@@ -464,22 +508,21 @@ class _FormEventState extends State<FormEvent> {
                             color: secondaryColor,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(16))),
-                        child: SmartSelect<MusicGender>.multiple(
+                        child: SmartSelect<int>.multiple(
                           title: 'Genre musicaux',
                           placeholder: 'Aucun choix',
-                          selectedValue: widget.selectedIndexedMusicGenders,
+                          selectedValue: widget.selectedMusicGendersId,
                           choiceItems: widget.choiceMusicGenders,
                           onChange: (multiSelected) => setState(() {
-                            widget.changesFunction(true);
                             if (multiSelected != null) {
-                              widget.selectedMusicGenders =
-                                  multiSelected.choice;
-                              widget.event.musicgenders =
-                                  List<MusicGender>.from(widget
-                                      .selectedMusicGenders!
-                                      .map((x) => x.value));
-                              widget.eventFunction(widget.event);
+                              if (multiSelected.choice != null) {
+                                widget.selectedMusicGendersWidgets =
+                                    multiSelected.choice!;
+                              } else {
+                                widget.selectedMusicGendersWidgets = [];
+                              }
                             }
+                            _updateEventMusicGenders();
                           }),
                           choiceType: S2ChoiceType.cards,
                           groupConfig: S2GroupConfig(
@@ -521,19 +564,21 @@ class _FormEventState extends State<FormEvent> {
                             color: secondaryColor,
                             borderRadius:
                                 BorderRadius.all(Radius.circular(16))),
-                        child: SmartSelect<Artist>.multiple(
+                        child: SmartSelect<int>.multiple(
                           title: 'Artistes',
                           placeholder: 'Aucun choix',
-                          selectedValue: widget.selectedIndexedArtists,
+                          selectedValue: widget.selectedArtistsId,
                           choiceItems: widget.choiceArtists,
                           onChange: (multiSelected) => setState(() {
-                            widget.changesFunction(true);
                             if (multiSelected != null) {
-                              widget.selectedArtists = multiSelected.choice;
-                              widget.event.artists = List<Artist>.from(
-                                  widget.selectedArtists!.map((x) => x.value));
-                              widget.eventFunction(widget.event);
+                              if (multiSelected.choice != null) {
+                                widget.selectedArtistsWidgets =
+                                    multiSelected.choice!;
+                              } else {
+                                widget.selectedArtistsWidgets = [];
+                              }
                             }
+                            _updateEventArtists();
                           }),
                           choiceType: S2ChoiceType.cards,
                           groupConfig: S2GroupConfig(

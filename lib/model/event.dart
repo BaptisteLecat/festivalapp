@@ -35,12 +35,12 @@ class Event {
 
   String iri;
   int id;
-  List<Artist>? artists;
+  List<Artist> artists;
   DateTime date;
   String picture;
   String name;
   DateTime endDate;
-  List<MusicGender>? musicgenders;
+  List<MusicGender> musicgenders;
   String description;
   double? latitude;
   double? longitude;
@@ -50,14 +50,14 @@ class Event {
         iri: json["@id"],
         id: json["id"],
         artists: json["artists"] == null
-            ? null
+            ? []
             : List<Artist>.from(json["artists"].map((x) => Artist.fromJson(x))),
         date: DateTime.parse(json["date"]),
         picture: json["picture"] == null ? null : json["picture"],
         name: json["name"],
         endDate: DateTime.parse(json["endDate"]),
         musicgenders: json["musicgenders"] == null
-            ? null
+            ? []
             : List<MusicGender>.from(
                 json["musicgenders"].map((x) => MusicGender.fromJson(x))),
         description: json["description"],
@@ -69,14 +69,16 @@ class Event {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "artists": List<dynamic>.from(artists!.map((x) => x.iri)),
+        "artists": musicgenders.isEmpty
+            ? []
+            : List<dynamic>.from(artists.map((x) => x.iri)),
         "date": date.toIso8601String(),
         "name": name,
         "picture": (picture != null) ? picture : null,
         "endDate": endDate.toIso8601String(),
-        "musicgenders": musicgenders == null
-            ? null
-            : List<dynamic>.from(musicgenders!.map((x) => x.iri)),
+        "musicgenders": musicgenders.isEmpty
+            ? []
+            : List<dynamic>.from(musicgenders.map((x) => x.iri)),
         "description": description,
         "latitude": latitude == null ? null : latitude,
         "longitude": longitude == null ? null : longitude,

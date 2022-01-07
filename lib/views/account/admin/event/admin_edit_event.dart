@@ -28,8 +28,8 @@ class AdminEditEvent extends StatefulWidget {
 
 class _AdminEditEventState extends State<AdminEditEvent> {
   bool changes = false;
-  List<S2Choice<MusicGender>>? selectedMusicGenders;
-  List<S2Choice<Artist>>? selectedArtists;
+  List<S2Choice<int>> selectedMusicGendersWidgets = [];
+  List<S2Choice<int>> selectedArtistsWidgets = [];
   late Future<List<MusicGender>> _futureMusicGender;
   List<MusicGender> listMusicGenders = [];
   late Future<List<Artist>> _futureArtists;
@@ -42,64 +42,64 @@ class _AdminEditEventState extends State<AdminEditEvent> {
     super.initState();
   }
 
-  List<MusicGender> getSelectedMusicGenders() {
-    List<MusicGender> items = [];
-    if (selectedMusicGenders != null) {
-      selectedMusicGenders!.forEach((element) {
-        print(element);
-        items.add(element.value);
+  ///This function get the musicGenders Id from the API and the local selected.
+  ///If no local selected it will add the remote ones in the local list.
+  List<int> getSelectedMusicGendersId() {
+    List<int> items = [];
+    if (selectedMusicGendersWidgets.isNotEmpty) {
+      selectedMusicGendersWidgets.forEach((musicGenderWidget) {
+        items.add(musicGenderWidget.value);
       });
     } else {
-      items = hydrateMusicGenders();
+      items = hydrateMusicGendersId();
     }
     return items;
   }
 
-  List<MusicGender> hydrateMusicGenders() {
-    List<MusicGender> items = [];
-    if (widget.event.musicgenders != null) {
-      widget.event.musicgenders!.forEach((element) {
-        print(element.label);
-        items.add(element);
-      });
-    }
-    return items;
-  }
-
-  List<S2Choice<MusicGender>> getMusicGenders() {
-    List<S2Choice<MusicGender>> items = [];
-    listMusicGenders.forEach((element) {
-      items.add(S2Choice<MusicGender>(value: element, title: element.label));
+  ///This function get the musicGenders from the currently Event fetch in API.
+  List<int> hydrateMusicGendersId() {
+    List<int> items = [];
+    widget.event.musicgenders.forEach((musicGender) {
+      items.add(musicGender.id!);
     });
     return items;
   }
 
-  List<Artist> getSelectedArtists() {
-    List<Artist> items = [];
-    if (selectedArtists != null) {
-      selectedArtists!.forEach((element) {
-        items.add(element.value);
+  List<S2Choice<int>> buildMusicGendersWidgets() {
+    List<S2Choice<int>> items = [];
+    listMusicGenders.forEach((musicGender) {
+      items
+          .add(S2Choice<int>(value: musicGender.id!, title: musicGender.label));
+    });
+    return items;
+  }
+
+  ///This function get the artists Id from the API and the local selected.
+  ///If no local selected it will add the remote ones in the local list.
+  List<int> getSelectedArtistsId() {
+    List<int> items = [];
+    if (selectedArtistsWidgets.isNotEmpty) {
+      selectedArtistsWidgets.forEach((artistWidget) {
+        items.add(artistWidget.value);
       });
     } else {
-      items = hydrateArtists();
+      items = hydrateArtistsId();
     }
     return items;
   }
 
-  List<Artist> hydrateArtists() {
-    List<Artist> items = [];
-    if (widget.event.artists != null) {
-      widget.event.artists!.forEach((element) {
-        items.add(element);
-      });
-    }
+  List<int> hydrateArtistsId() {
+    List<int> items = [];
+    widget.event.artists.forEach((artist) {
+      items.add(artist.id);
+    });
     return items;
   }
 
-  List<S2Choice<Artist>> getArtists() {
-    List<S2Choice<Artist>> items = [];
-    listArtists.forEach((element) {
-      items.add(S2Choice<Artist>(value: element, title: element.name));
+  List<S2Choice<int>> buildArtistsWidgets() {
+    List<S2Choice<int>> items = [];
+    listArtists.forEach((artist) {
+      items.add(S2Choice<int>(value: artist.id, title: artist.name));
     });
     return items;
   }
@@ -161,12 +161,15 @@ class _AdminEditEventState extends State<AdminEditEvent> {
                         event: widget.event.copy(),
                         eventFunction: _updateEventValue,
                         changesFunction: _updateChangesValue,
-                        selectedMusicGenders: selectedMusicGenders,
-                        selectedIndexedMusicGenders: getSelectedMusicGenders(),
-                        choiceMusicGenders: getMusicGenders(),
-                        selectedArtists: selectedArtists,
-                        selectedIndexedArtists: getSelectedArtists(),
-                        choiceArtists: getArtists(),
+                        listMusicGenders: listMusicGenders,
+                        listArtists: listArtists,
+                        selectedMusicGendersWidgets:
+                            selectedMusicGendersWidgets,
+                        selectedMusicGendersId: getSelectedMusicGendersId(),
+                        choiceMusicGenders: buildMusicGendersWidgets(),
+                        selectedArtistsWidgets: selectedArtistsWidgets,
+                        selectedArtistsId: getSelectedArtistsId(),
+                        choiceArtists: buildArtistsWidgets(),
                       ),
                     );
                   } else if (snapshot.connectionState ==
