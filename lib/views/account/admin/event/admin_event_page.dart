@@ -95,14 +95,18 @@ class _AdminEventPageState extends State<AdminEventPage> {
                                     ),
                                     child: AdminEventTile(
                                       event: listEvents[index],
-                                      onTap: () {
-                                        Navigator.push(
+                                      onTap: () async {
+                                        await Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     AdminEditEvent(
                                                       event: listEvents[index],
-                                                    )));
+                                                    ))).then((value) {
+                                          setState(() {
+                                            listEvents[index] = value;
+                                          });
+                                        });
                                       },
                                     ),
                                   );

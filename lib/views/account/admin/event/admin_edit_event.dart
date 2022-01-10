@@ -133,6 +133,13 @@ class _AdminEditEventState extends State<AdminEditEvent> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Modifier un évenement"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          tooltip: 'Retour',
+          onPressed: () {
+            Navigator.pop(context, widget.event);
+          },
+        ),
         actions: [
           Visibility(
             visible: changes,
