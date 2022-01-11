@@ -29,36 +29,36 @@ class _AdminPageState extends State<AdminPage> {
         title: Text("Panel Administrateur"),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: secondaryColor,
-        selectedItemColor: primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
+        selectedItemColor: Theme.of(context).primaryColorDark,
         currentIndex: selectedIndex,
         onTap: (value) {
           setState(() {
             selectedIndex = value;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.event),
               activeIcon: Icon(
                 Icons.event,
-                color: primaryColor,
+                color: Theme.of(context).primaryColorDark,
               ),
-              label: 'Evenement'),
+              label: 'Evenements'),
           BottomNavigationBarItem(
               icon: Icon(Icons.music_note),
               activeIcon: Icon(
                 Icons.music_note,
-                color: primaryColor,
+                color: Theme.of(context).primaryColorDark,
               ),
-              label: 'Genre-Musique'),
+              label: 'Genres-Musicaux'),
           BottomNavigationBarItem(
               icon: Icon(Icons.album),
               activeIcon: Icon(
                 Icons.album,
-                color: primaryColor,
+                color: Theme.of(context).primaryColorDark,
               ),
-              label: 'Artiste'),
+              label: 'Artistes'),
         ],
       ),
       body: SafeArea(

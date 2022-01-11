@@ -25,113 +25,100 @@ class _AdminEventPageState extends State<AdminEventPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Flexible(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text("Liste des Evenements",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5!
-                                .copyWith(color: Colors.white)),
-                        Container(
-                          decoration: const BoxDecoration(
-                              color: primaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 4),
-                            child: Text("Ajouter",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(color: Colors.white)),
-                          ),
-                        ),
-                      ],
+                  Text("Liste des Evenements",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(color: Colors.white)),
+                  Container(
+                    decoration: const BoxDecoration(
+                        color: primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
+                      child: Text("Ajouter",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1!
+                              .copyWith(color: Colors.white)),
                     ),
-                  ),
-                  Expanded(
-                    child: FutureBuilder(
-                        future: _futureEvents,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data != null) {
-                            listEvents = snapshot.data as List<Event>;
-                            return ListView.builder(
-                                itemCount: listEvents.length,
-                                itemBuilder: (context, index) {
-                                  return Dismissible(
-                                    direction: DismissDirection.endToStart,
-                                    key: UniqueKey(),
-                                    background: Container(
-                                      color: Colors.red,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(4.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              "Supprimer",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1!
-                                                  .copyWith(
-                                                      color: Colors.white),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    child: AdminEventTile(
-                                      event: listEvents[index],
-                                      onTap: () async {
-                                        await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    AdminEditEvent(
-                                                      event: listEvents[index],
-                                                    ))).then((value) {
-                                          setState(() {
-                                            listEvents[index] = value;
-                                          });
-                                        });
-                                      },
-                                    ),
-                                  );
-                                });
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          } else {
-                            return Center(
-                              child: Text("${snapshot.error}"),
-                            );
-                          }
-                        }),
                   ),
                 ],
               ),
             ),
-          ),
-          Expanded(
-              child: Container(
-            color: Colors.red,
-          ))
-        ],
+            Expanded(
+              flex: 4,
+              child: FutureBuilder(
+                  future: _futureEvents,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData && snapshot.data != null) {
+                      listEvents = snapshot.data as List<Event>;
+                      return ListView.builder(
+                          itemCount: listEvents.length,
+                          itemBuilder: (context, index) {
+                            return Dismissible(
+                              direction: DismissDirection.endToStart,
+                              key: UniqueKey(),
+                              background: Container(
+                                color: Colors.red,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        "Supprimer",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1!
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              child: AdminEventTile(
+                                event: listEvents[index],
+                                onTap: () async {
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AdminEditEvent(
+                                                event: listEvents[index],
+                                              ))).then((value) {
+                                    setState(() {
+                                      listEvents[index] = value;
+                                    });
+                                  });
+                                },
+                              ),
+                            );
+                          });
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return Center(
+                        child: Text("${snapshot.error}"),
+                      );
+                    }
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }
