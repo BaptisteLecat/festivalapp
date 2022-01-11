@@ -85,12 +85,12 @@ class _BodyState extends State<Body> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
-        children: const [
+        children: [
           Text(
             "Créez un compte",
             textAlign: TextAlign.start,
             style: TextStyle(
-                color: Color(0xff3D5382),
+                color: Theme.of(context).primaryColor,
                 fontSize: 24,
                 fontWeight: FontWeight.bold),
           ),
@@ -99,7 +99,7 @@ class _BodyState extends State<Body> {
             "Bienvenue ! Créez un compte pour commencer votre discussion.",
             textAlign: TextAlign.start,
             style: TextStyle(
-                color: Color(0x993D5382),
+                color: Theme.of(context).primaryColorDark,
                 fontSize: 18,
                 fontWeight: FontWeight.w400),
           ),
@@ -115,6 +115,7 @@ class _BodyState extends State<Body> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CTAButton(
+              backgroundColor: Theme.of(context).primaryColor,
               onPressed: () async {
                 if (widget.formKey.currentState?.validate() == true &&
                     widget.isAcceptedCGU) {
@@ -153,11 +154,11 @@ class _BodyState extends State<Body> {
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => LoginScreen()));
               },
-              child: const Text(
+              child: Text(
                 "Vous avez déjà un compte?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: Color(0xff3D5382),
+                    color: Theme.of(context).primaryColorDark,
                     fontSize: 16,
                     fontWeight: FontWeight.normal),
               ))

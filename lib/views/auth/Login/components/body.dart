@@ -85,13 +85,19 @@ class _BodyState extends State<Body> {
           Text(
             "Vous revoilà !",
             textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.headline1,
+            style: Theme.of(context)
+                .textTheme
+                .headline1!
+                .copyWith(color: Theme.of(context).primaryColor),
           ),
           const SizedBox(height: 6),
           Text(
             "Ravi de vous retrouver. Connectez-vous pour reprendre votre discussion.",
             textAlign: TextAlign.start,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context)
+                .textTheme
+                .headline6!
+                .copyWith(color: Theme.of(context).primaryColorDark),
           )
         ],
       ),
@@ -105,6 +111,7 @@ class _BodyState extends State<Body> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           CTAButton(
+              backgroundColor: Theme.of(context).primaryColor,
               onPressed: () async {
                 if (widget.formKey.currentState?.validate() == true) {
                   var password = widget.passwordController.value.text;
@@ -145,7 +152,7 @@ class _BodyState extends State<Body> {
                 "Vous n’avez pas encore de compte?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    color: const Color(0xff3D5382),
+                    color: Theme.of(context).primaryColorDark,
                     fontSize: 16,
                     fontWeight: FontWeight.normal),
               ))

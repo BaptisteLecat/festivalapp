@@ -18,8 +18,8 @@ class _PasswordHandlerState extends State<PasswordHandler> {
   @override
   void initState() {
     super.initState();
-    hidePasswordButton =
-        HidePasswordButton(callback: this._updatePasswordState);
+    hidePasswordButton = HidePasswordButton(
+        callback: this._updatePasswordState, color: Colors.white);
   }
 
   @override

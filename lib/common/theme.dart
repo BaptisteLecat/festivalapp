@@ -63,6 +63,7 @@ ThemeData basicTheme() {
       textTheme: _basicTextTheme(base.textTheme),
       //textTheme: Typography().white,
       primaryColor: primaryColor,
+      primaryColorDark: Colors.white,
       appBarTheme: AppBarTheme(backgroundColor: primaryColor),
       textSelectionTheme: TextSelectionThemeData(
           cursorColor: primaryColor, selectionColor: primaryColor),
@@ -76,7 +77,7 @@ ThemeData basicTheme() {
         size: 20.0,
       ),
       buttonColor: Colors.white,
-      backgroundColor: Colors.white,
+      backgroundColor: secondaryColor,
       tabBarTheme: base.tabBarTheme.copyWith(
         labelColor: Color(0xffce107c),
         unselectedLabelColor: Colors.grey,

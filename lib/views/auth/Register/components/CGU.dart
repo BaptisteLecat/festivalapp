@@ -32,7 +32,8 @@ class _CGUState extends State<CGU> {
                   return Checkbox(
                       activeColor: primaryColor,
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(color: inputBorder),
+                          side: BorderSide(
+                              color: Theme.of(context).primaryColorDark),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(6))),
                       value: widget.isAcceptedCGU,
@@ -56,7 +57,10 @@ class _CGUState extends State<CGU> {
           Expanded(
               child: RichText(
                   text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1!
+                          .copyWith(color: Theme.of(context).primaryColorDark),
                       children: [
                 const TextSpan(text: "J'accepte les "),
                 TextSpan(

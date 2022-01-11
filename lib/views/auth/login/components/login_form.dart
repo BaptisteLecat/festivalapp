@@ -74,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
                   style: Theme.of(context)
                       .textTheme
                       .headline6!
-                      .copyWith(color: secondaryColor),
+                      .copyWith(color: Theme.of(context).primaryColorDark),
                 ),
               )
             ],
@@ -87,7 +87,8 @@ class _LoginFormState extends State<LoginForm> {
                   return Checkbox(
                       activeColor: primaryColor,
                       shape: RoundedRectangleBorder(
-                          side: BorderSide(color: inputBorder),
+                          side: BorderSide(
+                              color: Theme.of(context).primaryColorDark),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(6))),
                       value: widget.stayConnected,
@@ -104,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
                 style: Theme.of(context)
                     .textTheme
                     .headline6!
-                    .copyWith(color: secondaryColor),
+                    .copyWith(color: Theme.of(context).primaryColorDark),
               )
             ],
           )

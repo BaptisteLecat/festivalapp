@@ -1,3 +1,4 @@
+import 'package:festivalapp/common/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/views/auth/Login/login_screen.dart';
 import 'package:festivalapp/views/auth/Register/register_screen.dart';
@@ -27,7 +28,7 @@ class Body extends StatelessWidget {
     );
   }
 
-  Container _buildInfoText() {
+  Container _buildInfoText(BuildContext context) {
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -36,7 +37,7 @@ class Body extends StatelessWidget {
             "L'application pour faire la fête",
             style: TextStyle(
               fontFamily: 'Poppins',
-              color: const Color(0xff3D5382),
+              color: Theme.of(context).primaryColorDark,
               fontSize: 26,
               fontWeight: FontWeight.bold,
             ),
@@ -49,7 +50,7 @@ class Body extends StatelessWidget {
             "Suivez facilement tous vos événements",
             style: TextStyle(
               fontFamily: 'Poppins',
-              color: const Color(0x993D5382),
+              color: Theme.of(context).primaryColorDark,
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
@@ -66,6 +67,7 @@ class Body extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           CTAButton(
+            backgroundColor: Theme.of(context).primaryColor,
             onPressed: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => LoginScreen()));
@@ -93,7 +95,7 @@ class Body extends StatelessWidget {
               "Enregistrement",
               style: TextStyle(
                 fontFamily: 'Poppins',
-                color: const Color(0xff3D5382),
+                color: Theme.of(context).primaryColorDark,
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
@@ -116,9 +118,9 @@ class Body extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              _buildTitleText(
-                  "FESTIV", "APP", Color(0xffFDAB53), Color(0xff3D5382)),
-              _buildInfoText(),
+              _buildTitleText("FESTIV", "APP", Theme.of(context).primaryColor,
+                  Theme.of(context).backgroundColor),
+              _buildInfoText(context),
               _buildAuthButtons(context),
             ],
           ),
