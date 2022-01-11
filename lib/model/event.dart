@@ -46,26 +46,30 @@ class Event {
   double? longitude;
   double? price;
 
-  factory Event.fromJson(Map<String, dynamic> json) => Event(
-        iri: json["@id"],
-        id: json["id"],
-        artists: json["artists"] == null
-            ? []
-            : List<Artist>.from(json["artists"].map((x) => Artist.fromJson(x))),
-        date: DateTime.parse(json["date"]),
-        picture: json["picture"] == null ? null : json["picture"],
-        name: json["name"],
-        endDate: DateTime.parse(json["endDate"]),
-        musicgenders: json["musicgenders"] == null
-            ? []
-            : List<MusicGender>.from(
-                json["musicgenders"].map((x) => MusicGender.fromJson(x))),
-        description: json["description"],
-        latitude: json["latitude"] == null ? null : json["latitude"].toDouble(),
-        longitude:
-            json["longitude"] == null ? null : json["longitude"].toDouble(),
-        price: json["price"] == null ? null : json["price"].toDouble(),
-      );
+  factory Event.fromJson(Map<String, dynamic> json) {
+    print(json["artists"][0] is String);
+    return Event(
+      iri: json["@id"],
+      id: json["id"],
+      artists: json["artists"] == null || json["artists"][0] is String
+          ? []
+          : List<Artist>.from(json["artists"].map((x) => Artist.fromJson(x))),
+      date: DateTime.parse(json["date"]),
+      picture: json["picture"] == null ? null : json["picture"],
+      name: json["name"],
+      endDate: DateTime.parse(json["endDate"]),
+      musicgenders:
+          json["musicgenders"] == null || json["musicgenders"][0] is String
+              ? []
+              : List<MusicGender>.from(
+                  json["musicgenders"].map((x) => MusicGender.fromJson(x))),
+      description: json["description"],
+      latitude: json["latitude"] == null ? null : json["latitude"].toDouble(),
+      longitude:
+          json["longitude"] == null ? null : json["longitude"].toDouble(),
+      price: json["price"] == null ? null : json["price"].toDouble(),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,

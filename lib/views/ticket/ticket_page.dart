@@ -16,32 +16,35 @@ class TicketPage extends StatefulWidget {
 class _TicketPageState extends State<TicketPage> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8,
-      child: FutureBuilder(
-          future: BarcodeFetcher().getBarcodeList(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Barcode> listBarcode = snapshot.data as List<Barcode>;
-              return Swiper(
-                  itemCount: listBarcode.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Barcode barcode = listBarcode[index];
-                    return Ticket(
-                      barcode: barcode,
-                    );
-                  },
-                  itemWidth: MediaQuery.of(context).size.width * 0.8,
-                  pagination: new SwiperPagination(),
-                  layout: SwiperLayout.STACK);
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              return const Center(
-                child: Text("Une erreur est survenue."),
-              );
-            }
-          }),
+    return SafeArea(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: FutureBuilder(
+            future: BarcodeFetcher().getBarcodeList(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<Barcode> listBarcode = snapshot.data as List<Barcode>;
+                return Swiper(
+                    itemCount: listBarcode.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Barcode barcode = listBarcode[index];
+                      return Ticket(
+                        barcode: barcode,
+                      );
+                    },
+                    itemWidth: MediaQuery.of(context).size.width * 0.8,
+                    pagination: new SwiperPagination(),
+                    layout: SwiperLayout.STACK);
+              } else if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                print(snapshot.error);
+                return const Center(
+                  child: Text("Une erreur est survenue."),
+                );
+              }
+            }),
+      ),
     );
   }
 }
