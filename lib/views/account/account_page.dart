@@ -13,30 +13,32 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: AuthFetcher().whoAmI(),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          AppUser user = snapshot.data as AppUser;
-          return Container(
-            child: Column(
-              children: [
-                Visibility(
-                    visible: user.isAdmin(),
-                    child: Flexible(child: AdminButton()))
-              ],
-            ),
-          );
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return const Center(
-            child: Text("Une erreur est survenue"),
-          );
-        }
-      },
+    return SafeArea(
+      child: FutureBuilder(
+        future: AuthFetcher().whoAmI(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            AppUser user = snapshot.data as AppUser;
+            return Container(
+              child: Column(
+                children: [
+                  Visibility(
+                      visible: user.isAdmin(),
+                      child: Flexible(child: AdminButton()))
+                ],
+              ),
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return const Center(
+              child: Text("Une erreur est survenue"),
+            );
+          }
+        },
+      ),
     );
   }
 }
