@@ -37,7 +37,7 @@ class Event {
   int id;
   List<Artist> artists;
   DateTime date;
-  String picture;
+  String? picture;
   String name;
   DateTime endDate;
   List<MusicGender> musicgenders;
@@ -118,7 +118,7 @@ class Event {
 
   Uint8List getPictureEncoded() {
     if (picture != null) {
-      return const Base64Decoder().convert(picture);
+      return const Base64Decoder().convert(picture!);
     } else {
       throw Exception("Aucune image disponible");
     }
