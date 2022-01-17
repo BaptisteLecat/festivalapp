@@ -127,8 +127,7 @@ class _EventPageState extends State<EventPage> {
                                         .textTheme
                                         .headline6!
                                         .copyWith(color: Colors.white)),
-                                Text(
-                                    "Une superbe description incroyablement stylé, c'est dingue serieusement! Vive flutter, c'est trop génial.",
+                                Text(widget.event.description,
                                     style:
                                         Theme.of(context).textTheme.bodyText1),
                               ],
@@ -145,6 +144,13 @@ class _EventPageState extends State<EventPage> {
                             child: (widget.event.latitude != null &&
                                     widget.event.longitude != null)
                                 ? GoogleMap(
+                                    markers: {
+                                      Marker(
+                                          markerId: MarkerId(widget.event.name),
+                                          position: LatLng(
+                                              widget.event.latitude!,
+                                              widget.event.longitude!))
+                                    },
                                     myLocationButtonEnabled: false,
                                     onMapCreated:
                                         (GoogleMapController controller) {
@@ -179,7 +185,8 @@ class _EventPageState extends State<EventPage> {
                                         borderRadius: BorderRadius.circular(28),
                                       ))),
                                   onPressed: () {},
-                                  child: Text("Acheter un ticket 272€",
+                                  child: Text(
+                                      "Acheter un ticket ${widget.event.price}€",
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline4))
