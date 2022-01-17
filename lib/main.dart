@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:festivalapp/services/stripe/stripe_services.dart';
 import 'package:flutter/material.dart';
 import 'package:festivalapp/views/splash_screen_wrapper.dart';
 import 'package:festivalapp/common/theme.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 ///Development
 class MyHttpOverrides extends HttpOverrides {
@@ -16,6 +18,10 @@ class MyHttpOverrides extends HttpOverrides {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = StripeServices.publishKey;
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.lecat';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
 
   runApp(MyApp());
 

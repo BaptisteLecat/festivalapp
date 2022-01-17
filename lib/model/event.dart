@@ -123,4 +123,8 @@ class Event {
       throw Exception("Aucune image disponible");
     }
   }
+
+  String getPriceStripeFormatted() {
+    return price.toString().replaceAll(".", "");
+  }
 }
