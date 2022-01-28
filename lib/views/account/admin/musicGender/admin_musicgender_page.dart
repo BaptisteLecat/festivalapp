@@ -72,43 +72,46 @@ class _AdminMusicGenderPageState extends State<AdminMusicGenderPage> {
                       return ListView.builder(
                           itemCount: listMusicGenders.length,
                           itemBuilder: (context, index) {
-                            return Dismissible(
-                              direction: DismissDirection.endToStart,
-                              key: UniqueKey(),
-                              background: Container(
-                                color: Colors.red,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "Supprimer",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .copyWith(color: Colors.white),
-                                      ),
-                                    ],
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: Dismissible(
+                                direction: DismissDirection.endToStart,
+                                key: UniqueKey(),
+                                background: Container(
+                                  color: Colors.red,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "Supprimer",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              child: AdminMusicGenderTile(
-                                musicGender: listMusicGenders[index],
-                                onTap: () async {
-                                  await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AdminEditMusicGender(
-                                                musicGender:
-                                                    listMusicGenders[index],
-                                              ))).then((value) {
-                                    setState(() {
-                                      listMusicGenders[index] = value;
+                                child: AdminMusicGenderTile(
+                                  musicGender: listMusicGenders[index],
+                                  onTap: () async {
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AdminEditMusicGender(
+                                                  musicGender:
+                                                      listMusicGenders[index],
+                                                ))).then((value) {
+                                      setState(() {
+                                        listMusicGenders[index] = value;
+                                      });
                                     });
-                                  });
-                                },
+                                  },
+                                ),
                               ),
                             );
                           });

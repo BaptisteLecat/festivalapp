@@ -67,41 +67,45 @@ class _AdminEventPageState extends State<AdminEventPage> {
                       return ListView.builder(
                           itemCount: listEvents.length,
                           itemBuilder: (context, index) {
-                            return Dismissible(
-                              direction: DismissDirection.endToStart,
-                              key: UniqueKey(),
-                              background: Container(
-                                color: Colors.red,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(4.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "Supprimer",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText1!
-                                            .copyWith(color: Colors.white),
-                                      ),
-                                    ],
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: Dismissible(
+                                direction: DismissDirection.endToStart,
+                                key: UniqueKey(),
+                                background: Container(
+                                  color: Colors.red,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          "Supprimer",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1!
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              child: AdminEventTile(
-                                event: listEvents[index],
-                                onTap: () async {
-                                  await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AdminEditEvent(
-                                                event: listEvents[index],
-                                              ))).then((value) {
-                                    setState(() {
-                                      listEvents[index] = value;
+                                child: AdminEventTile(
+                                  event: listEvents[index],
+                                  onTap: () async {
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AdminEditEvent(
+                                                  event: listEvents[index],
+                                                ))).then((value) {
+                                      setState(() {
+                                        listEvents[index] = value;
+                                      });
                                     });
-                                  });
-                                },
+                                  },
+                                ),
                               ),
                             );
                           });
