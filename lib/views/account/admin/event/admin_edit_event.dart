@@ -122,6 +122,9 @@ class _AdminEditEventState extends State<AdminEditEvent> {
           backgroundColor: successMessageColor,
           content: Text('Modification enregistrées')));
       FocusScope.of(context).unfocus();
+      setState(() {
+        this.changes = false;
+      });
     }).onError((AppException error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: errorMessageColor,

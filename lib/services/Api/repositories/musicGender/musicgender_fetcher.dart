@@ -8,4 +8,11 @@ class MusicGenderFetcher extends MainFetcher {
     print(response.content);
     return listMusicgenderFromJson(response.content);
   }
+
+  Future<MusicGender> putMusicGender({required MusicGender musicGender}) async {
+    final response = await put(
+        url: "music_genders/${musicGender.id}", body: musicGender.toJson());
+    print(response.content);
+    return MusicGender.fromJson(response.content);
+  }
 }

@@ -29,4 +29,10 @@ class MusicGender {
         "id": (id == null) ? null : id,
         "label": (label == null) ? null : label,
       };
+
+  MusicGender copy() => MusicGender(
+        iri: iri,
+        id: id,
+        label: label,
+      );
 }
