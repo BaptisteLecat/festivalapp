@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/model/event.dart';
+import 'package:festivalapp/views/event/payment/payment_summary_page.dart';
+import 'package:festivalapp/views/event/payment/webhook_payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -184,7 +186,14 @@ class _EventPageState extends State<EventPage> {
                                           RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(28),
                                       ))),
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PaymentSummaryPage(
+                                                    event: widget.event)));
+                                  },
                                   child: Text(
                                       "Acheter un ticket ${widget.event.price}€",
                                       style: Theme.of(context)
