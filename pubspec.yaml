@@ -52,6 +52,8 @@ dependencies:
   image_picker: ^0.8.4+4
   awesome_select: ^5.1.0
   flutter_stripe: ^2.1.1
+  dotted_line: ^3.1.0
+  loader_overlay: ^2.0.5
 
 dev_dependencies:
   flutter_test:

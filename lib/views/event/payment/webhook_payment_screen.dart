@@ -24,6 +24,7 @@ class _WebhookPaymentScreenState extends State<WebhookPaymentScreen> {
         children: [
           SizedBox(height: 20),
           CardField(
+            style: TextStyle(color: Theme.of(context).primaryColor),
             onCardChanged: (card) {
               setState(() {
                 _card = card;
