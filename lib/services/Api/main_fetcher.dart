@@ -82,6 +82,7 @@ class MainFetcher {
       if (!noToken!) {
         await _setUserToken();
       }
+      print(Uri.parse(_urlBuilder(url)));
       final response = await http.post(Uri.parse(_urlBuilder(url)),
           headers: headers == null
               ? MainFetcher.userToken != "noToken" && !noToken
@@ -104,38 +105,40 @@ class MainFetcher {
     return responseJson;
   }
 
-  /*Future<dynamic> postFile(String url, File imageFile,
-      {Map<String, String>? headers, Map<String, dynamic>? body}) async {
+  Future<dynamic> postEntity(
+      {required String url,
+      Map<String, String>? headers,
+      String? body,
+      bool? noToken = false,
+      bool? toJsonLd}) async {
     var responseJson;
     try {
       print(_urlBuilder(url));
-      var stream = imageFile.readAsBytes().asStream();
-
-      var multipartFile = new http.MultipartFile(
-          'files', stream, imageFile.lengthSync(),
-          filename: basename(imageFile.path),
-          contentType: MediaType('image', 'png'));
-
-      var request = http.MultipartRequest("POST", Uri.parse(_urlBuilder(url)));
-      request.files.add(multipartFile);
-      request.headers.addAll(headers == null
-          ? MainFetcher.userToken != "noToken"
-              ? {
-                  "Accept": "application/json",
-                  "Authorization": "Bearer ${MainFetcher.userToken}"
-                }
-              : {
-                  "Accept": "application/json",
-                }
-          : headers);
-      print(request.headers);
-      var response = await request.send();
-      responseJson = _returnResponse(response);
+      if (!noToken!) {
+        await _setUserToken();
+      }
+      print(Uri.parse(_urlBuilder(url)));
+      final response = await http.post(Uri.parse(_urlBuilder(url)),
+          headers: headers == null
+              ? MainFetcher.userToken != "noToken" && !noToken
+                  ? {
+                      "Accept": "application/ld+json",
+                      "Content-Type": "application/json",
+                      "Authorization": "Bearer ${MainFetcher.userToken}"
+                    }
+                  : {
+                      "Accept": "application/ld+json",
+                      "Content-Type": "application/json",
+                    }
+              : headers,
+          body: body,
+          encoding: Utf8Codec());
+      responseJson = _returnResponse(response: response, toJsonLd: toJsonLd);
     } on SocketException {
       throw FetchDataException(message: 'No Internet connection');
     }
     return responseJson;
-  }*/
+  }
 
   Future<dynamic> put(
       {required String url,

@@ -64,10 +64,10 @@ class StripeServices {
 
   Future<void> _createPaymentInAPI(
       {required String amount,
-      required int productId,
+      required int eventId,
       required sessionId}) async {
     await PaymentRepository()
-        .createPayment(amount: amount, product: productId, session: sessionId);
+        .createPayment(amount: amount, eventId: eventId, session: sessionId);
   }
 
   Future<StripeTransactionResponse> startPayment({required Event event}) async {
@@ -77,7 +77,7 @@ class StripeServices {
           amount: event.getPriceStripeFormatted());
       await this._createPaymentInAPI(
           amount: event.price.toString(),
-          productId: event.id,
+          eventId: event.id,
           sessionId: clientSecret["id"]);
       await this._comfirmPaymentToStripe(clientSecret);
       return StripeTransactionResponse(
@@ -88,6 +88,7 @@ class StripeServices {
       return StripeTransactionResponse(
           message: error.error.localizedMessage!, success: false);
     } catch (error) {
+      print(error);
       return StripeTransactionResponse(
           message: 'Une erreur est survenue lors de la transaction',
           success: false);
