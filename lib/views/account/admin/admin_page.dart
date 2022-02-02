@@ -1,4 +1,5 @@
 import 'package:festivalapp/common/constants/colors.dart';
+import 'package:festivalapp/views/account/admin/artist/admin_artist_page.dart';
 import 'package:festivalapp/views/account/admin/event/admin_event_page.dart';
 import 'package:festivalapp/views/account/admin/musicGender/admin_musicgender_page.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,7 @@ class _AdminPageState extends State<AdminPage> {
     const List<Widget> _pages = <Widget>[
       AdminEventPage(),
       AdminMusicGenderPage(),
-      Icon(
-        Icons.chat,
-        size: 150,
-      ),
+      AdminArtistPage(),
     ];
     return Scaffold(
       appBar: AppBar(

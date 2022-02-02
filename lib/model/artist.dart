@@ -44,6 +44,14 @@ class Artist {
         "picture": picture,
       };
 
+  Artist copy() => Artist(
+        iri: iri,
+        id: id,
+        name: name,
+        musicGenders: musicGenders,
+        picture: picture,
+      );
+
   Uint8List getPictureEncoded() {
     if (picture != null) {
       return const Base64Decoder().convert(picture);
