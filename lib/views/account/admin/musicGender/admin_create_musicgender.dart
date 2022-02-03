@@ -2,47 +2,48 @@ import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/error/app_exception.dart';
 import 'package:festivalapp/model/music_gender.dart';
 import 'package:festivalapp/services/Api/repositories/musicGender/musicgender_fetcher.dart';
+import 'package:festivalapp/views/account/admin/musicGender/components/form_create_musicgender.dart';
 import 'package:festivalapp/views/account/admin/musicGender/components/form_edit_musicgender.dart';
 import 'package:flutter/material.dart';
 
-class AdminEditMusicGender extends StatefulWidget {
-  MusicGender musicGender;
-  AdminEditMusicGender({Key? key, required this.musicGender}) : super(key: key);
+class AdminCreateMusicGender extends StatefulWidget {
+  AdminCreateMusicGender({Key? key}) : super(key: key);
 
   @override
-  _AdminEditMusicGenderState createState() => _AdminEditMusicGenderState();
+  _AdminCreateMusicGenderState createState() => _AdminCreateMusicGenderState();
 }
 
-class _AdminEditMusicGenderState extends State<AdminEditMusicGender> {
-  bool changes = false;
+class _AdminCreateMusicGenderState extends State<AdminCreateMusicGender> {
+  bool complete = false;
+  MusicGender? musicGender;
 
   @override
   void initState() {
     super.initState();
   }
 
-  void _updateChangesValue(bool changes) {
+  void _updateCompleteValue(bool complete) {
     setState(() {
-      this.changes = changes;
+      this.complete = complete;
     });
   }
 
   void _updateMusicGenderValue(MusicGender musicGender) {
     setState(() {
-      widget.musicGender = musicGender;
+      this.musicGender = musicGender;
     });
   }
 
-  Future<void> _saveMusicGenderUpdate() async {
+  Future<void> _createMusicGender() async {
     await MusicGenderFetcher()
-        .putMusicGender(musicGender: widget.musicGender)
+        .postMusicGender(musicGender: musicGender!)
         .then((MusicGender musicGender) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: successMessageColor,
-          content: Text('Modification enregistrées')));
+          content: Text('Création réussie.')));
       FocusScope.of(context).unfocus();
       setState(() {
-        this.changes = false;
+        this.complete = false;
       });
     }).onError((AppException error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -61,27 +62,29 @@ class _AdminEditMusicGenderState extends State<AdminEditMusicGender> {
             icon: const Icon(Icons.arrow_back),
             tooltip: 'Retour',
             onPressed: () {
-              Navigator.pop(context, widget.musicGender);
+              Navigator.pop(context, musicGender);
             },
           ),
-          actions: [
-            Visibility(
-              visible: changes,
-              child: IconButton(
-                icon: const Icon(Icons.done),
-                tooltip: 'Enregistrer',
-                onPressed: () async {
-                  await _saveMusicGenderUpdate();
-                },
-              ),
-            ),
-          ],
         ),
         body: SizedBox(
-          child: FormEditMusicGender(
-            musicGender: widget.musicGender.copy(),
-            musicGenderFunction: _updateMusicGenderValue,
-            changesFunction: _updateChangesValue,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 3,
+                child: FormCreateMusicGender(
+                  musicGenderFunction: _updateMusicGenderValue,
+                  changesFunction: _updateCompleteValue,
+                ),
+              ),
+              Visibility(
+                visible: complete,
+                child: ElevatedButton(
+                    onPressed: () async {
+                      await _createMusicGender();
+                    },
+                    child: const Text("Enregistrer")),
+              ),
+            ],
           ),
         ));
   }

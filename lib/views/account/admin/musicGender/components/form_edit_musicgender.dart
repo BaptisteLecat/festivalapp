@@ -3,11 +3,11 @@ import 'package:festivalapp/common/widgets/inputs/inputDecoration/advanced_decor
 import 'package:festivalapp/model/music_gender.dart';
 import 'package:flutter/material.dart';
 
-class FormMusicGender extends StatefulWidget {
+class FormEditMusicGender extends StatefulWidget {
   final MusicGender musicGender;
   final ValueChanged<MusicGender> musicGenderFunction;
   final ValueChanged<bool> changesFunction;
-  FormMusicGender({
+  FormEditMusicGender({
     required this.musicGender,
     required this.musicGenderFunction,
     required this.changesFunction,
@@ -15,10 +15,10 @@ class FormMusicGender extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _FormMusicGenderState createState() => _FormMusicGenderState();
+  _FormEditMusicGenderState createState() => _FormEditMusicGenderState();
 }
 
-class _FormMusicGenderState extends State<FormMusicGender> {
+class _FormEditMusicGenderState extends State<FormEditMusicGender> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController labelController = TextEditingController();
 

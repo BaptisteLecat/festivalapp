@@ -8,7 +8,7 @@ import 'package:festivalapp/services/Api/repositories/artist/artist_fetcher.dart
 import 'package:festivalapp/services/Api/repositories/event/event_fetcher.dart';
 import 'package:festivalapp/services/Api/repositories/musicGender/musicgender_fetcher.dart';
 import 'package:festivalapp/views/account/admin/artist/components/form_artist.dart';
-import 'package:festivalapp/views/account/admin/musicGender/components/form_musicgender.dart';
+import 'package:festivalapp/views/account/admin/musicGender/components/form_edit_musicgender.dart';
 import 'package:flutter/material.dart';
 
 class AdminEditArtist extends StatefulWidget {
