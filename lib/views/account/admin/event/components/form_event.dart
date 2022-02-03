@@ -106,6 +106,7 @@ class _FormEventState extends State<FormEvent> {
         }
       });
     });
+    //Quelque chose à été ajouté ou retiré : liste vide == retiré (on ne gère pas le cas ou rien n'est selectionne ni avant ni après)
     if (added || tempMusicGenders.isEmpty) {
       widget.event.musicgenders = tempMusicGenders;
       widget.changesFunction(true);
@@ -127,6 +128,7 @@ class _FormEventState extends State<FormEvent> {
         }
       });
     });
+    //Quelque chose à été ajouté ou retiré : liste vide == retiré (on ne gère pas le cas ou rien n'est selectionne ni avant ni après)
     if (added || tempArtists.isEmpty) {
       widget.event.artists = tempArtists;
       widget.changesFunction(true);
