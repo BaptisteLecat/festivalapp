@@ -17,4 +17,10 @@ class EventFetcher extends MainFetcher {
     print(response.content);
     return Event.fromJson(response.content);
   }
+
+  Future<int> deleteEvent({required Event event}) async {
+    final response = await delete(url: "events/${event.id}");
+    print(response.content);
+    return response.statusCode;
+  }
 }

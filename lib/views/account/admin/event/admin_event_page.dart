@@ -1,4 +1,5 @@
 import 'package:festivalapp/common/constants/colors.dart';
+import 'package:festivalapp/common/error/app_exception.dart';
 import 'package:festivalapp/model/event.dart';
 import 'package:festivalapp/services/Api/repositories/event/event_fetcher.dart';
 import 'package:festivalapp/views/account/admin/event/admin_edit_event.dart';
@@ -72,6 +73,24 @@ class _AdminEventPageState extends State<AdminEventPage> {
                               child: Dismissible(
                                 direction: DismissDirection.endToStart,
                                 key: UniqueKey(),
+                                onDismissed: (direction) {
+                                  EventFetcher()
+                                      .deleteEvent(event: listEvents[index])
+                                      .then((value) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            backgroundColor:
+                                                successMessageColor,
+                                            content: Text(
+                                                'Cet évènement à été supprimé.')));
+                                  }).onError((AppException error, stackTrace) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            backgroundColor:
+                                                successMessageColor,
+                                            content: Text("${error.message}")));
+                                  });
+                                },
                                 background: Container(
                                   color: Colors.red,
                                   child: Padding(

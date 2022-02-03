@@ -210,7 +210,7 @@ class MainFetcher {
           headers: headers == null
               ? {
                   "Accept": "application/ld+json",
-                  "X-AUTH-DEVICE": "${MainFetcher.userToken}"
+                  "Authorization": "Bearer ${MainFetcher.userToken}"
                 }
               : headers);
       responseJson = _returnResponse(response: response, hasNoBody: true);

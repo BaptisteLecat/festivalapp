@@ -1,4 +1,5 @@
 import 'package:festivalapp/common/constants/colors.dart';
+import 'package:festivalapp/common/error/app_exception.dart';
 import 'package:festivalapp/model/event.dart';
 import 'package:festivalapp/model/music_gender.dart';
 import 'package:festivalapp/services/Api/repositories/event/event_fetcher.dart';
@@ -77,6 +78,25 @@ class _AdminMusicGenderPageState extends State<AdminMusicGenderPage> {
                               child: Dismissible(
                                 direction: DismissDirection.endToStart,
                                 key: UniqueKey(),
+                                onDismissed: (direction) {
+                                  MusicGenderFetcher()
+                                      .deleteMusicGender(
+                                          musicGender: listMusicGenders[index])
+                                      .then((value) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            backgroundColor:
+                                                successMessageColor,
+                                            content: Text(
+                                                'Ce genre musical à été supprimé.')));
+                                  }).onError((AppException error, stackTrace) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            backgroundColor:
+                                                successMessageColor,
+                                            content: Text("${error.message}")));
+                                  });
+                                },
                                 background: Container(
                                   color: Colors.red,
                                   child: Padding(

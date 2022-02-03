@@ -1,4 +1,5 @@
 import 'package:festivalapp/common/constants/colors.dart';
+import 'package:festivalapp/common/error/app_exception.dart';
 import 'package:festivalapp/model/artist.dart';
 import 'package:festivalapp/model/event.dart';
 import 'package:festivalapp/model/music_gender.dart';
@@ -80,6 +81,24 @@ class _AdminArtistPageState extends State<AdminArtistPage> {
                               child: Dismissible(
                                 direction: DismissDirection.endToStart,
                                 key: UniqueKey(),
+                                onDismissed: (direction) {
+                                  ArtistFetcher()
+                                      .deleteArtist(artist: listArtists[index])
+                                      .then((value) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            backgroundColor:
+                                                successMessageColor,
+                                            content: Text(
+                                                'Cet artiste à été supprimé.')));
+                                  }).onError((AppException error, stackTrace) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            backgroundColor:
+                                                successMessageColor,
+                                            content: Text("${error.message}")));
+                                  });
+                                },
                                 background: Container(
                                   color: Colors.red,
                                   child: Padding(

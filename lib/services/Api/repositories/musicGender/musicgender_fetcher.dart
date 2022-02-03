@@ -15,4 +15,10 @@ class MusicGenderFetcher extends MainFetcher {
     print(response.content);
     return MusicGender.fromJson(response.content);
   }
+
+  Future<int> deleteMusicGender({required MusicGender musicGender}) async {
+    final response = await delete(url: "music_genders/${musicGender.id}");
+    print(response.content);
+    return response.statusCode;
+  }
 }
