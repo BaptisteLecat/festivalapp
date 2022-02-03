@@ -47,22 +47,23 @@ class Event {
   double? price;
 
   factory Event.fromJson(Map<String, dynamic> json) {
-    print(json["artists"][0] is String);
     return Event(
       iri: json["@id"],
       id: json["id"],
-      artists: json["artists"] == null || json["artists"][0] is String
+      artists: json["artists"] == null ||
+              (json["artists"].length > 0 && json["artists"][0] is String)
           ? []
           : List<Artist>.from(json["artists"].map((x) => Artist.fromJson(x))),
       date: DateTime.parse(json["date"]),
       picture: json["picture"] == null ? null : json["picture"],
       name: json["name"],
       endDate: DateTime.parse(json["endDate"]),
-      musicgenders:
-          json["musicgenders"] == null || json["musicgenders"][0] is String
-              ? []
-              : List<MusicGender>.from(
-                  json["musicgenders"].map((x) => MusicGender.fromJson(x))),
+      musicgenders: json["musicgenders"] == null ||
+              (json["musicgenders"].length > 0 &&
+                  json["musicgenders"][0] is String)
+          ? []
+          : List<MusicGender>.from(
+              json["musicgenders"].map((x) => MusicGender.fromJson(x))),
       description: json["description"],
       latitude: json["latitude"] == null ? null : json["latitude"].toDouble(),
       longitude:
