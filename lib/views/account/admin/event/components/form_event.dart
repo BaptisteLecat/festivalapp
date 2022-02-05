@@ -650,11 +650,36 @@ class _FormEventState extends State<FormEvent> {
                                   )
                                 : Container(
                                     color: secondaryColor,
-                                    child: (picture != null)
-                                        ? Image.file(File(picture!.path))
-                                        : Image.memory(
-                                            widget.event.getPictureEncoded(),
-                                          )),
+                                    child:
+                                        Stack(fit: StackFit.expand, children: [
+                                      (picture != null)
+                                          ? Image.file(File(picture!.path))
+                                          : Image.memory(
+                                              widget.event.getPictureEncoded(),
+                                            ),
+                                      Center(
+                                        child: InkWell(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Icon(Icons.insert_photo),
+                                              Text("Choisir une image",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .copyWith(
+                                                          color: Colors.white)),
+                                            ],
+                                          ),
+                                          onTap: () async {
+                                            await pickImage();
+                                            widget.changesFunction(true);
+                                          },
+                                        ),
+                                      ),
+                                    ])),
                           )),
                     ],
                   ),
