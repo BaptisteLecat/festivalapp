@@ -14,10 +14,9 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
-class FormEvent extends StatefulWidget {
-  final Event event;
+class FormCreateEvent extends StatefulWidget {
   final ValueChanged<Event> eventFunction;
-  final ValueChanged<bool> changesFunction;
+  final ValueChanged<bool> completeFunction;
   List<MusicGender> listMusicGenders;
   List<Artist> listArtists;
   List<S2Choice<int>> selectedMusicGendersWidgets;
@@ -26,10 +25,9 @@ class FormEvent extends StatefulWidget {
   List<S2Choice<int>> selectedArtistsWidgets;
   List<int> selectedArtistsId;
   List<S2Choice<int>> choiceArtists;
-  FormEvent({
-    required this.event,
+  FormCreateEvent({
     required this.eventFunction,
-    required this.changesFunction,
+    required this.completeFunction,
     required this.listMusicGenders,
     required this.listArtists,
     required this.selectedMusicGendersWidgets,
@@ -42,10 +40,10 @@ class FormEvent extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _FormEventState createState() => _FormEventState();
+  _FormCreateEventState createState() => _FormCreateEventState();
 }
 
-class _FormEventState extends State<FormEvent> {
+class _FormCreateEventState extends State<FormCreateEvent> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -55,16 +53,17 @@ class _FormEventState extends State<FormEvent> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
   XFile? picture;
+  String? eventPicture;
+  List<Artist>? eventListArtists;
+  List<MusicGender>? eventListMusicGenders;
+  DateTime? eventDate;
+  DateTime? eventEndDate;
+  double? eventLatitude;
+  double? eventLongitude;
+  double? eventPrice;
 
   @override
   void initState() {
-    nameController.text = widget.event.name;
-    descriptionController.text = widget.event.description;
-    latitudeController.text = widget.event.latitude.toString();
-    longitudeController.text = widget.event.longitude.toString();
-    priceController.text = widget.event.price.toString();
-    startDateController.text = widget.event.date.toString();
-    endDateController.text = widget.event.endDate.toString();
     super.initState();
   }
 
@@ -80,6 +79,57 @@ class _FormEventState extends State<FormEvent> {
     super.dispose();
   }
 
+  bool _formIsComplete() {
+    bool somethingWrong = false;
+
+    if (_formKey.currentState!.validate()) {
+      if (nameController.text == "" && nameController.text == null) {
+        somethingWrong = true;
+      }
+      if (descriptionController.text == "" &&
+          descriptionController.text == null) {
+        somethingWrong = true;
+      }
+      if (eventLatitude == null ||
+          eventLongitude == null ||
+          eventPrice == null) {
+        somethingWrong = true;
+      }
+      if (eventDate == null || eventEndDate == null) {
+        somethingWrong = true;
+      }
+      if (eventListArtists == null ||
+          eventListMusicGenders == null ||
+          eventPicture == null) {
+        somethingWrong = true;
+      }
+    }
+
+    if (somethingWrong == false) {
+      setState(() {
+        widget.completeFunction(true);
+        widget.eventFunction(_hydrateObject());
+      });
+    }
+
+    return (somethingWrong) ? false : true;
+  }
+
+  Event _hydrateObject() => Event(
+        iri: "",
+        id: 0,
+        artists: eventListArtists!,
+        date: eventDate!,
+        picture: eventPicture,
+        name: nameController.text,
+        endDate: eventEndDate!,
+        musicgenders: eventListMusicGenders!,
+        description: descriptionController.text,
+        latitude: eventLatitude!,
+        longitude: eventLongitude,
+        price: eventPrice,
+      );
+
   Future<void> pickImage() async {
     ImagePicker _picker = ImagePicker();
     await _picker.pickImage(source: ImageSource.gallery).then((xFile) async {
@@ -87,12 +137,20 @@ class _FormEventState extends State<FormEvent> {
         picture = xFile;
         await picture!.readAsBytes().then((bytes) {
           setState(() {
-            widget.event.picture = base64Encode(bytes);
-            widget.eventFunction(widget.event);
+            eventPicture = base64Encode(bytes);
+            _formIsComplete();
           });
         });
       }
     });
+  }
+
+  Uint8List getPictureEncoded() {
+    if (picture != null) {
+      return const Base64Decoder().convert(eventPicture!);
+    } else {
+      throw Exception("Aucune image disponible");
+    }
   }
 
   void _updateEventMusicGenders() {
@@ -108,11 +166,11 @@ class _FormEventState extends State<FormEvent> {
     });
     //Quelque chose à été ajouté ou retiré : liste vide == retiré (on ne gère pas le cas ou rien n'est selectionne ni avant ni après)
     if (added || tempMusicGenders.isEmpty) {
-      widget.event.musicgenders = tempMusicGenders;
-      widget.changesFunction(true);
-      widget.eventFunction(widget.event);
+      setState(() {
+        eventListMusicGenders = tempMusicGenders;
+        _formIsComplete();
+      });
     }
-    print(widget.event.musicgenders.length);
   }
 
   void _updateEventArtists() {
@@ -130,12 +188,11 @@ class _FormEventState extends State<FormEvent> {
     });
     //Quelque chose à été ajouté ou retiré : liste vide == retiré (on ne gère pas le cas ou rien n'est selectionne ni avant ni après)
     if (added || tempArtists.isEmpty) {
-      widget.event.artists = tempArtists;
-      widget.changesFunction(true);
-      widget.eventFunction(widget.event);
+      setState(() {
+        eventListArtists = tempArtists;
+        _formIsComplete();
+      });
     }
-    print(tempArtists.length);
-    print(widget.event.artists.length);
   }
 
   @override
@@ -180,13 +237,7 @@ class _FormEventState extends State<FormEvent> {
                                   fontWeight: FontWeight.w400,
                                 ),
                                 onChanged: (String value) {
-                                  if (value != widget.event.name) {
-                                    widget.event.name = nameController.text;
-                                    setState(() {
-                                      widget.changesFunction(true);
-                                      widget.eventFunction(widget.event);
-                                    });
-                                  }
+                                  _formIsComplete();
                                 },
                                 decoration: AdvancedDecoration.inputDecoration(
                                     hintText: 'Nom'),
@@ -224,14 +275,7 @@ class _FormEventState extends State<FormEvent> {
                                   fontWeight: FontWeight.w400,
                                 ),
                                 onChanged: (String value) {
-                                  if (value != widget.event.description) {
-                                    widget.event.description =
-                                        descriptionController.text;
-                                    setState(() {
-                                      widget.changesFunction(true);
-                                      widget.eventFunction(widget.event);
-                                    });
-                                  }
+                                  _formIsComplete();
                                 },
                                 decoration: AdvancedDecoration.inputDecoration(
                                     hintText: 'Description'),
@@ -272,15 +316,9 @@ class _FormEventState extends State<FormEvent> {
                                   fontWeight: FontWeight.w400,
                                 ),
                                 onChanged: (String value) {
-                                  if (value !=
-                                      widget.event.latitude.toString()) {
-                                    widget.event.latitude =
-                                        double.parse(latitudeController.text);
-                                    setState(() {
-                                      widget.changesFunction(true);
-                                      widget.eventFunction(widget.event);
-                                    });
-                                  }
+                                  eventLatitude =
+                                      double.parse(latitudeController.text);
+                                  _formIsComplete();
                                 },
                                 decoration: AdvancedDecoration.inputDecoration(
                                     hintText: 'Latitude'),
@@ -321,15 +359,9 @@ class _FormEventState extends State<FormEvent> {
                                   fontWeight: FontWeight.w400,
                                 ),
                                 onChanged: (String value) {
-                                  if (value !=
-                                      widget.event.longitude.toString()) {
-                                    widget.event.longitude =
-                                        double.parse(longitudeController.text);
-                                    setState(() {
-                                      widget.changesFunction(true);
-                                      widget.eventFunction(widget.event);
-                                    });
-                                  }
+                                  eventLongitude =
+                                      double.parse(longitudeController.text);
+                                  _formIsComplete();
                                 },
                                 decoration: AdvancedDecoration.inputDecoration(
                                     hintText: 'Longitude'),
@@ -370,14 +402,9 @@ class _FormEventState extends State<FormEvent> {
                                   fontWeight: FontWeight.w400,
                                 ),
                                 onChanged: (String value) {
-                                  if (value != widget.event.price.toString()) {
-                                    widget.event.price =
-                                        double.parse(priceController.text);
-                                    setState(() {
-                                      widget.changesFunction(true);
-                                      widget.eventFunction(widget.event);
-                                    });
-                                  }
+                                  eventPrice =
+                                      double.parse(priceController.text);
+                                  _formIsComplete();
                                 },
                                 decoration: AdvancedDecoration.inputDecoration(
                                     hintText: 'Prix'),
@@ -403,7 +430,7 @@ class _FormEventState extends State<FormEvent> {
                               ),
                             ),
                             DateTimeField(
-                              initialValue: widget.event.date,
+                              initialValue: DateTime.now(),
                               format: DateFormat("yyyy-MM-dd HH:mm"),
                               textInputAction: TextInputAction.next,
                               controller: startDateController,
@@ -429,13 +456,8 @@ class _FormEventState extends State<FormEvent> {
                                   );
                                   DateTime combinedDate =
                                       DateTimeField.combine(date, time);
-                                  if (combinedDate != widget.event.date) {
-                                    widget.event.date = combinedDate;
-                                    setState(() {
-                                      widget.changesFunction(true);
-                                      widget.eventFunction(widget.event);
-                                    });
-                                  }
+                                  eventDate = combinedDate;
+                                  _formIsComplete();
                                   return combinedDate;
                                 } else {
                                   return currentValue;
@@ -462,7 +484,7 @@ class _FormEventState extends State<FormEvent> {
                               ),
                             ),
                             DateTimeField(
-                              initialValue: widget.event.endDate,
+                              initialValue: DateTime.now(),
                               format: DateFormat("yyyy-MM-dd HH:mm"),
                               textInputAction: TextInputAction.next,
                               controller: endDateController,
@@ -488,13 +510,8 @@ class _FormEventState extends State<FormEvent> {
                                   );
                                   DateTime combinedDate =
                                       DateTimeField.combine(date, time);
-                                  if (combinedDate != widget.event.endDate) {
-                                    widget.event.endDate = combinedDate;
-                                    setState(() {
-                                      widget.changesFunction(true);
-                                      widget.eventFunction(widget.event);
-                                    });
-                                  }
+                                  eventEndDate = combinedDate;
+                                  _formIsComplete();
                                   return combinedDate;
                                 } else {
                                   return currentValue;
@@ -621,8 +638,7 @@ class _FormEventState extends State<FormEvent> {
                           aspectRatio: 1,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
-                            child: (picture == null &&
-                                    widget.event.picture == null)
+                            child: (picture == null && eventPicture == null)
                                 ? Container(
                                     color: secondaryColor,
                                     child: Center(
@@ -643,7 +659,6 @@ class _FormEventState extends State<FormEvent> {
                                         ),
                                         onTap: () async {
                                           await pickImage();
-                                          widget.changesFunction(true);
                                         },
                                       ),
                                     ),
@@ -655,7 +670,7 @@ class _FormEventState extends State<FormEvent> {
                                       (picture != null)
                                           ? Image.file(File(picture!.path))
                                           : Image.memory(
-                                              widget.event.getPictureEncoded(),
+                                              getPictureEncoded(),
                                             ),
                                       Center(
                                         child: InkWell(
@@ -675,7 +690,6 @@ class _FormEventState extends State<FormEvent> {
                                           ),
                                           onTap: () async {
                                             await pickImage();
-                                            widget.changesFunction(true);
                                           },
                                         ),
                                       ),

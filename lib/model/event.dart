@@ -76,7 +76,6 @@ class Event {
   }
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "artists": musicgenders.isEmpty
             ? []
             : List<dynamic>.from(artists.map((x) => x.iri)),

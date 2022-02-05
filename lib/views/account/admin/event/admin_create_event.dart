@@ -7,19 +7,19 @@ import 'package:festivalapp/model/music_gender.dart';
 import 'package:festivalapp/services/Api/repositories/artist/artist_fetcher.dart';
 import 'package:festivalapp/services/Api/repositories/event/event_fetcher.dart';
 import 'package:festivalapp/services/Api/repositories/musicGender/musicgender_fetcher.dart';
-import 'package:festivalapp/views/account/admin/event/components/form_edit_event.dart';
+import 'package:festivalapp/views/account/admin/event/components/form_create_event.dart';
 import 'package:flutter/material.dart';
 
-class AdminEditEvent extends StatefulWidget {
-  Event event;
-  AdminEditEvent({Key? key, required this.event}) : super(key: key);
+class AdminCreateEvent extends StatefulWidget {
+  AdminCreateEvent({Key? key}) : super(key: key);
 
   @override
-  _AdminEditEventState createState() => _AdminEditEventState();
+  _AdminCreateEventState createState() => _AdminCreateEventState();
 }
 
-class _AdminEditEventState extends State<AdminEditEvent> {
-  bool changes = false;
+class _AdminCreateEventState extends State<AdminCreateEvent> {
+  bool complete = false;
+  Event? event;
   List<S2Choice<int>> selectedMusicGendersWidgets = [];
   List<S2Choice<int>> selectedArtistsWidgets = [];
   late Future<List<MusicGender>> _futureMusicGender;
@@ -51,9 +51,12 @@ class _AdminEditEventState extends State<AdminEditEvent> {
   ///This function get the musicGenders from the currently Event fetch in API.
   List<int> hydrateMusicGendersId() {
     List<int> items = [];
-    widget.event.musicgenders.forEach((musicGender) {
-      items.add(musicGender.id!);
+    _futureMusicGender.then((musicGenders) {
+      musicGenders.forEach((musicGender) {
+        items.add(musicGender.id!);
+      });
     });
+
     return items;
   }
 
@@ -82,9 +85,12 @@ class _AdminEditEventState extends State<AdminEditEvent> {
 
   List<int> hydrateArtistsId() {
     List<int> items = [];
-    widget.event.artists.forEach((artist) {
-      items.add(artist.id);
+    _futureArtists.then((artists) {
+      artists.forEach((artist) {
+        items.add(artist.id);
+      });
     });
+
     return items;
   }
 
@@ -96,26 +102,26 @@ class _AdminEditEventState extends State<AdminEditEvent> {
     return items;
   }
 
-  void _updateChangesValue(bool changes) {
+  void _updateCompleteValue(bool complete) {
     setState(() {
-      this.changes = changes;
+      this.complete = complete;
     });
   }
 
   void _updateEventValue(Event event) {
     setState(() {
-      widget.event = event;
+      this.event = event;
     });
   }
 
-  Future<void> _saveEventUpdate() async {
-    await EventFetcher().putEvent(event: widget.event).then((Event event) {
+  Future<void> _createEvent() async {
+    await EventFetcher().postEvent(event: event!).then((Event event) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: successMessageColor,
-          content: Text('Modification enregistrées')));
+          content: Text('Création réussie.')));
       FocusScope.of(context).unfocus();
       setState(() {
-        this.changes = false;
+        this.complete = false;
       });
     }).onError((AppException error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -134,21 +140,9 @@ class _AdminEditEventState extends State<AdminEditEvent> {
           icon: const Icon(Icons.arrow_back),
           tooltip: 'Retour',
           onPressed: () {
-            Navigator.pop(context, widget.event);
+            Navigator.pop(context, event);
           },
         ),
-        actions: [
-          Visibility(
-            visible: changes,
-            child: IconButton(
-              icon: const Icon(Icons.done),
-              tooltip: 'Enregistrer',
-              onPressed: () async {
-                await _saveEventUpdate();
-              },
-            ),
-          ),
-        ],
       ),
       body: FutureBuilder(
           future: _futureArtists,
@@ -161,19 +155,34 @@ class _AdminEditEventState extends State<AdminEditEvent> {
                   if (snapshot.hasData && snapshot.data != null) {
                     listMusicGenders = snapshot.data as List<MusicGender>;
                     return SizedBox(
-                      child: FormEditEvent(
-                        event: widget.event.copy(),
-                        eventFunction: _updateEventValue,
-                        changesFunction: _updateChangesValue,
-                        listMusicGenders: listMusicGenders,
-                        listArtists: listArtists,
-                        selectedMusicGendersWidgets:
-                            selectedMusicGendersWidgets,
-                        selectedMusicGendersId: getSelectedMusicGendersId(),
-                        choiceMusicGenders: buildMusicGendersWidgets(),
-                        selectedArtistsWidgets: selectedArtistsWidgets,
-                        selectedArtistsId: getSelectedArtistsId(),
-                        choiceArtists: buildArtistsWidgets(),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: FormCreateEvent(
+                              eventFunction: _updateEventValue,
+                              completeFunction: _updateCompleteValue,
+                              listMusicGenders: listMusicGenders,
+                              listArtists: listArtists,
+                              selectedMusicGendersWidgets:
+                                  selectedMusicGendersWidgets,
+                              selectedMusicGendersId:
+                                  getSelectedMusicGendersId(),
+                              choiceMusicGenders: buildMusicGendersWidgets(),
+                              selectedArtistsWidgets: selectedArtistsWidgets,
+                              selectedArtistsId: getSelectedArtistsId(),
+                              choiceArtists: buildArtistsWidgets(),
+                            ),
+                          ),
+                          Visibility(
+                            visible: complete,
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  await _createEvent();
+                                },
+                                child: const Text("Enregistrer")),
+                          ),
+                        ],
                       ),
                     );
                   } else if (snapshot.connectionState ==
@@ -182,7 +191,6 @@ class _AdminEditEventState extends State<AdminEditEvent> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    print("sdrsdfsdfsdf");
                     return Center(
                       child: Text("${snapshot.error}"),
                     );
@@ -194,7 +202,6 @@ class _AdminEditEventState extends State<AdminEditEvent> {
                 child: CircularProgressIndicator(),
               );
             } else {
-              print("sdrsdfsdfsdf");
               return Center(
                 child: Text("${snapshot.error}"),
               );

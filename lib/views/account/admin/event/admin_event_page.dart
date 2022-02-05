@@ -2,6 +2,7 @@ import 'package:festivalapp/common/constants/colors.dart';
 import 'package:festivalapp/common/error/app_exception.dart';
 import 'package:festivalapp/model/event.dart';
 import 'package:festivalapp/services/Api/repositories/event/event_fetcher.dart';
+import 'package:festivalapp/views/account/admin/event/admin_create_event.dart';
 import 'package:festivalapp/views/account/admin/event/admin_edit_event.dart';
 import 'package:festivalapp/views/account/admin/event/components/admin_event_tile.dart';
 import 'package:flutter/material.dart';
@@ -41,19 +42,32 @@ class _AdminEventPageState extends State<AdminEventPage> {
                           .textTheme
                           .headline5!
                           .copyWith(color: Colors.white)),
-                  Container(
-                    decoration: const BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
-                      child: Text("Ajouter",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(color: Colors.white)),
+                  GestureDetector(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        child: Text("Ajouter",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.white)),
+                      ),
                     ),
+                    onTap: () async {
+                      await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AdminCreateEvent()))
+                          .then((value) {
+                        setState(() {
+                          _futureEvents = EventFetcher().getEventList();
+                        });
+                      });
+                    },
                   ),
                 ],
               ),

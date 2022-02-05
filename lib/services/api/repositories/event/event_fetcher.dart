@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:festivalapp/model/event.dart';
 import 'package:festivalapp/services/api/main_fetcher.dart';
 
@@ -9,6 +11,14 @@ class EventFetcher extends MainFetcher {
             : "events");
     print(response.content);
     return listEventFromJson(response.content);
+  }
+
+  Future<Event> postEvent({required Event event}) async {
+    print("postevennt");
+    final response =
+        await postEntity(url: "events", body: jsonEncode(event.toJson()));
+    print(response.content);
+    return Event.fromJson(response.content);
   }
 
   Future<Event> putEvent({required Event event}) async {
