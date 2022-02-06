@@ -40,6 +40,29 @@ class _EventPageState extends State<EventPage> {
     });
   }
 
+  List<Widget> _generateArtistListWidgets() {
+    List<Widget> artistListWidgets = [];
+    widget.event.artists.forEach((artist) {
+      artistListWidgets.add(
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundImage: Image.memory(
+                  widget.event.artists[0].getPictureEncoded(),
+                  fit: BoxFit.fill,
+                ).image,
+              ),
+              Text(artist.name)
+            ],
+          ),
+        ),
+      );
+    });
+    return artistListWidgets;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -47,7 +70,7 @@ class _EventPageState extends State<EventPage> {
         body: Column(
           children: [
             Expanded(
-                flex: 4,
+                flex: 3,
                 child: SizedBox(
                   child: Stack(
                     fit: StackFit.expand,
@@ -68,7 +91,6 @@ class _EventPageState extends State<EventPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Icon(Icons.arrow_back),
-                                      Icon(Icons.favorite)
                                     ],
                                   ),
                                 ),
@@ -113,96 +135,134 @@ class _EventPageState extends State<EventPage> {
             Expanded(
                 flex: 5,
                 child: SizedBox(
-                  child: Column(
-                    children: [
-                      Flexible(
-                        flex: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: SizedBox(
+                  child: LayoutBuilder(
+                    builder: (context, constraint) {
+                      return SingleChildScrollView(
+                        child: ConstrainedBox(
+                          constraints:
+                              BoxConstraints(minHeight: constraint.maxHeight),
+                          child: IntrinsicHeight(
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Description",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(color: Colors.white)),
-                                Text(widget.event.description,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1),
+                                Flexible(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: SizedBox(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("Description",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6!
+                                                  .copyWith(
+                                                      color: Colors.white)),
+                                          Text(widget.event.description,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                    child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Ces artistes seront présent",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6!
+                                            .copyWith(color: Colors.white),
+                                      ),
+                                      Flexible(
+                                        child: Row(
+                                          children:
+                                              _generateArtistListWidgets(),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
+                                Expanded(
+                                  flex: 4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(18),
+                                      child: (widget.event.latitude != null &&
+                                              widget.event.longitude != null)
+                                          ? GoogleMap(
+                                              markers: {
+                                                Marker(
+                                                    markerId: MarkerId(
+                                                        widget.event.name),
+                                                    position: LatLng(
+                                                        widget.event.latitude!,
+                                                        widget
+                                                            .event.longitude!))
+                                              },
+                                              myLocationButtonEnabled: false,
+                                              onMapCreated: (GoogleMapController
+                                                  controller) {
+                                                _controller
+                                                    .complete(controller);
+                                              },
+                                              initialCameraPosition:
+                                                  _initialCameraPosition,
+                                            )
+                                          : Center(
+                                              child: Text(
+                                                  "Pas de de données de position."),
+                                            ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(18),
-                            child: (widget.event.latitude != null &&
-                                    widget.event.longitude != null)
-                                ? GoogleMap(
-                                    markers: {
-                                      Marker(
-                                          markerId: MarkerId(widget.event.name),
-                                          position: LatLng(
-                                              widget.event.latitude!,
-                                              widget.event.longitude!))
-                                    },
-                                    myLocationButtonEnabled: false,
-                                    onMapCreated:
-                                        (GoogleMapController controller) {
-                                      _controller.complete(controller);
-                                    },
-                                    initialCameraPosition:
-                                        _initialCameraPosition,
-                                  )
-                                : Center(
-                                    child:
-                                        Text("Pas de de données de position."),
-                                  ),
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                          flex: 1,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextButton(
-                                  style: ButtonStyle(
-                                      padding: MaterialStateProperty.all(
-                                          EdgeInsets.symmetric(
-                                              horizontal: 36, vertical: 6)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              primaryColor),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(28),
-                                      ))),
-                                  onPressed: () async {
-                                    await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PaymentSummaryPage(
-                                                    event: widget.event)));
-                                  },
-                                  child: Text(
-                                      "Acheter un ticket ${widget.event.price}€",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline4))
-                            ],
-                          ))
-                    ],
+                      );
+                    },
                   ),
+                )),
+            Flexible(
+                flex: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                        style: ButtonStyle(
+                            padding: MaterialStateProperty.all(
+                                EdgeInsets.symmetric(
+                                    horizontal: 36, vertical: 6)),
+                            backgroundColor:
+                                MaterialStateProperty.all(primaryColor),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(28),
+                            ))),
+                        onPressed: () async {
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PaymentSummaryPage(event: widget.event)));
+                        },
+                        child: Text("Acheter un ticket ${widget.event.price}€",
+                            style: Theme.of(context).textTheme.headline4))
+                  ],
                 ))
           ],
         ),
