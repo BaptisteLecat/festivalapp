@@ -135,7 +135,7 @@ class _AdminCreateEventState extends State<AdminCreateEvent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Modifier un évenement"),
+        title: Text("Ajouter un évenement"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           tooltip: 'Retour',

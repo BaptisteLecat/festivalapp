@@ -57,7 +57,7 @@ class _AdminCreateMusicGenderState extends State<AdminCreateMusicGender> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Modifier un genre musical"),
+          title: Text("Ajouter un genre musical"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             tooltip: 'Retour',
