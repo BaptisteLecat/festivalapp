@@ -6,6 +6,7 @@ import 'package:festivalapp/model/music_gender.dart';
 import 'package:festivalapp/services/Api/repositories/artist/artist_fetcher.dart';
 import 'package:festivalapp/services/Api/repositories/event/event_fetcher.dart';
 import 'package:festivalapp/services/Api/repositories/musicGender/musicgender_fetcher.dart';
+import 'package:festivalapp/views/account/admin/artist/admin_create_artist.dart';
 import 'package:festivalapp/views/account/admin/artist/admin_edit_artist.dart';
 import 'package:festivalapp/views/account/admin/event/admin_edit_event.dart';
 import 'package:festivalapp/views/account/admin/event/components/admin_event_tile.dart';
@@ -49,19 +50,32 @@ class _AdminArtistPageState extends State<AdminArtistPage> {
                           .textTheme
                           .headline5!
                           .copyWith(color: Colors.white)),
-                  Container(
-                    decoration: const BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
-                      child: Text("Ajouter",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(color: Colors.white)),
+                  GestureDetector(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        child: Text("Ajouter",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(color: Colors.white)),
+                      ),
                     ),
+                    onTap: () async {
+                      await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AdminCreateArtist()))
+                          .then((value) {
+                        setState(() {
+                          _futureArtists = ArtistFetcher().getArtistList();
+                        });
+                      });
+                    },
                   ),
                 ],
               ),

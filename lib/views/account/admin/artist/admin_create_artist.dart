@@ -7,25 +7,25 @@ import 'package:festivalapp/model/music_gender.dart';
 import 'package:festivalapp/services/Api/repositories/artist/artist_fetcher.dart';
 import 'package:festivalapp/services/Api/repositories/event/event_fetcher.dart';
 import 'package:festivalapp/services/Api/repositories/musicGender/musicgender_fetcher.dart';
-import 'package:festivalapp/views/account/admin/artist/components/form_edit_artist.dart';
+import 'package:festivalapp/views/account/admin/artist/components/form_create_artist.dart';
 import 'package:flutter/material.dart';
 
-class AdminEditArtist extends StatefulWidget {
-  Artist artist;
-  AdminEditArtist({Key? key, required this.artist}) : super(key: key);
+class AdminCreateArtist extends StatefulWidget {
+  AdminCreateArtist({Key? key}) : super(key: key);
 
   @override
-  _AdminEditArtistState createState() => _AdminEditArtistState();
+  _AdminCreateArtistState createState() => _AdminCreateArtistState();
 }
 
-class _AdminEditArtistState extends State<AdminEditArtist> {
-  bool changes = false;
+class _AdminCreateArtistState extends State<AdminCreateArtist> {
+  bool complete = false;
   List<S2Choice<int>> selectedMusicGendersWidgets = [];
   List<S2Choice<int>> selectedEventsWidgets = [];
   late Future<List<MusicGender>> _futureMusicGender;
   List<MusicGender> listMusicGenders = [];
   late Future<List<Event>> _futureEvents;
   List<Event> listEvents = [];
+  Artist? artist;
 
   @override
   void initState() {
@@ -51,9 +51,12 @@ class _AdminEditArtistState extends State<AdminEditArtist> {
   ///This function get the musicGenders from the currently Event fetch in API.
   List<int> hydrateMusicGendersId() {
     List<int> items = [];
-    widget.artist.musicGenders!.forEach((musicGender) {
-      items.add(musicGender.id!);
+    _futureMusicGender.then((musicGenders) {
+      musicGenders.forEach((musicGender) {
+        items.add(musicGender.id!);
+      });
     });
+
     return items;
   }
 
@@ -83,8 +86,10 @@ class _AdminEditArtistState extends State<AdminEditArtist> {
   ///This function get the events from the currently Event fetch in API.
   List<int> hydrateEventsId() {
     List<int> items = [];
-    widget.artist.events!.forEach((event) {
-      items.add(event.id);
+    _futureEvents.then((events) {
+      events.forEach((event) {
+        items.add(event.id);
+      });
     });
     return items;
   }
@@ -97,28 +102,26 @@ class _AdminEditArtistState extends State<AdminEditArtist> {
     return items;
   }
 
-  void _updateChangesValue(bool changes) {
+  void _updateCompleteValue(bool complete) {
     setState(() {
-      this.changes = changes;
+      this.complete = complete;
     });
   }
 
   void _updateArtistValue(Artist artist) {
     setState(() {
-      widget.artist = artist;
+      this.artist = artist;
     });
   }
 
-  Future<void> _saveArtistUpdate() async {
-    await ArtistFetcher()
-        .putArtist(artist: widget.artist)
-        .then((Artist artist) {
+  Future<void> _createArtist() async {
+    await ArtistFetcher().postArtist(artist: artist!).then((Artist artist) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: successMessageColor,
-          content: Text('Modification enregistrées')));
+          content: Text('Création réussie.')));
       FocusScope.of(context).unfocus();
       setState(() {
-        this.changes = false;
+        this.complete = false;
       });
     }).onError((AppException error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -132,26 +135,14 @@ class _AdminEditArtistState extends State<AdminEditArtist> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Modifier un artiste"),
+          title: Text("Ajouter un artiste"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             tooltip: 'Retour',
             onPressed: () {
-              Navigator.pop(context, widget.artist);
+              Navigator.pop(context, artist);
             },
           ),
-          actions: [
-            Visibility(
-              visible: changes,
-              child: IconButton(
-                icon: const Icon(Icons.done),
-                tooltip: 'Enregistrer',
-                onPressed: () async {
-                  await _saveArtistUpdate();
-                },
-              ),
-            ),
-          ],
         ),
         body: FutureBuilder(
             future: _futureEvents,
@@ -164,19 +155,34 @@ class _AdminEditArtistState extends State<AdminEditArtist> {
                     if (snapshot.hasData && snapshot.data != null) {
                       listMusicGenders = snapshot.data as List<MusicGender>;
                       return SizedBox(
-                        child: FormEditArtist(
-                          artist: widget.artist.copy(),
-                          artistFunction: _updateArtistValue,
-                          changesFunction: _updateChangesValue,
-                          listMusicGenders: listMusicGenders,
-                          listEvents: listEvents,
-                          selectedMusicGendersWidgets:
-                              selectedMusicGendersWidgets,
-                          selectedMusicGendersId: getSelectedMusicGendersId(),
-                          choiceMusicGenders: buildMusicGendersWidgets(),
-                          selectedEventsWidgets: selectedEventsWidgets,
-                          selectedEventsId: getSelectedEventsId(),
-                          choiceEvents: buildEventsWidgets(),
+                        child: Column(
+                          children: [
+                            Expanded(
+                              flex: 3,
+                              child: FormCreateArtist(
+                                artistFunction: _updateArtistValue,
+                                completeFunction: _updateCompleteValue,
+                                listMusicGenders: listMusicGenders,
+                                listEvents: listEvents,
+                                selectedMusicGendersWidgets:
+                                    selectedMusicGendersWidgets,
+                                selectedMusicGendersId:
+                                    getSelectedMusicGendersId(),
+                                choiceMusicGenders: buildMusicGendersWidgets(),
+                                selectedEventsWidgets: selectedEventsWidgets,
+                                selectedEventsId: getSelectedEventsId(),
+                                choiceEvents: buildEventsWidgets(),
+                              ),
+                            ),
+                            Visibility(
+                              visible: complete,
+                              child: ElevatedButton(
+                                  onPressed: () async {
+                                    await _createArtist();
+                                  },
+                                  child: const Text("Enregistrer")),
+                            )
+                          ],
                         ),
                       );
                     } else if (snapshot.connectionState ==

@@ -9,7 +9,7 @@ import 'package:festivalapp/model/music_gender.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class FormArtist extends StatefulWidget {
+class FormEditArtist extends StatefulWidget {
   final Artist artist;
   final ValueChanged<Artist> artistFunction;
   final ValueChanged<bool> changesFunction;
@@ -21,7 +21,7 @@ class FormArtist extends StatefulWidget {
   List<S2Choice<int>> selectedEventsWidgets;
   List<int> selectedEventsId;
   List<S2Choice<int>> choiceEvents;
-  FormArtist({
+  FormEditArtist({
     required this.artist,
     required this.artistFunction,
     required this.changesFunction,
@@ -37,10 +37,10 @@ class FormArtist extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _FormArtistState createState() => _FormArtistState();
+  _FormEditArtistState createState() => _FormEditArtistState();
 }
 
-class _FormArtistState extends State<FormArtist> {
+class _FormEditArtistState extends State<FormEditArtist> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   XFile? picture;

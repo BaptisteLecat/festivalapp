@@ -50,7 +50,6 @@ class Artist {
   }
 
   Map<String, dynamic> toJson() => {
-        "id": (id == null) ? null : id,
         "name": (name == null) ? null : name,
         "musicgenders": musicGenders == null
             ? null
