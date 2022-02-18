@@ -33,7 +33,7 @@ dependencies:
   flutter_svg: ^0.22.0
   provider: ^5.0.0
   flutter_spinkit: ^5.0.0
-  shared_preferences: ^2.0.7
+  shared_preferences: ^2.0.13
   http: ^0.13.3
   nice_buttons: ^0.0.2
   dart_date: ^1.1.0
@@ -51,7 +51,7 @@ dependencies:
   intl: ^0.17.0
   image_picker: ^0.8.4+4
   awesome_select: ^5.1.0
-  flutter_stripe: ^2.1.1
+  flutter_stripe: ^2.2.0
   dotted_line: ^3.1.0
   loader_overlay: ^2.0.5
 
