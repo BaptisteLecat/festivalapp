@@ -14,7 +14,7 @@ import 'package:async/async.dart';
 class MainFetcher {
   static String userToken = "noToken";
   //String apiUrl = "https://10.19.8.120:8000/api";
-  String apiUrl = "https://festivapp.alwaysdata.net/api";
+  String apiUrl = "https://festivapp.baptistelecat-dev.fr/api";
 
   String _urlBuilder(String subUrl) {
     return "${this.apiUrl}/$subUrl";
