@@ -49,10 +49,13 @@ class _EventPageState extends State<EventPage> {
           child: Column(
             children: [
               CircleAvatar(
-                backgroundImage: Image.memory(
-                  widget.event.artists[0].getPictureEncoded(),
-                  fit: BoxFit.fill,
-                ).image,
+                backgroundColor: Theme.of(context).primaryColor,
+                backgroundImage: widget.event.artists[0].picture != null
+                    ? Image.memory(
+                        widget.event.artists[0].getPictureEncoded(),
+                        fit: BoxFit.fill,
+                      ).image
+                    : null,
               ),
               Text(artist.name)
             ],
