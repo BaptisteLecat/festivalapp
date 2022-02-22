@@ -73,7 +73,7 @@ class _EventPageState extends State<EventPage> {
         body: Column(
           children: [
             Expanded(
-                flex: 3,
+                flex: 5,
                 child: SizedBox(
                   child: Stack(
                     fit: StackFit.expand,
