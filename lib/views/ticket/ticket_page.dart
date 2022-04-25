@@ -24,17 +24,23 @@ class _TicketPageState extends State<TicketPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 List<Barcode> listBarcode = snapshot.data as List<Barcode>;
-                return Swiper(
-                    itemCount: listBarcode.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Barcode barcode = listBarcode[index];
-                      return Ticket(
-                        barcode: barcode,
-                      );
-                    },
-                    itemWidth: MediaQuery.of(context).size.width * 0.8,
-                    pagination: new SwiperPagination(),
-                    layout: SwiperLayout.STACK);
+                if (listBarcode.length > 0) {
+                  return Swiper(
+                      itemCount: listBarcode.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Barcode barcode = listBarcode[index];
+                        return Ticket(
+                          barcode: barcode,
+                        );
+                      },
+                      itemWidth: MediaQuery.of(context).size.width * 0.8,
+                      pagination: new SwiperPagination(),
+                      layout: SwiperLayout.STACK);
+                } else {
+                  return Center(
+                    child: Text("Vous n'avez aucun billet."),
+                  );
+                }
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else {
